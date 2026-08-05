@@ -64,6 +64,35 @@ Follow these steps in order. Total time: ~15 minutes.
 
 ---
 
+## Updating an already-deployed site (Arabic + editable text)
+
+If you already deployed this once before, you only need two quick steps to get
+the new Arabic interface and the "edit any text" feature:
+
+1. In Supabase → SQL Editor → New query, paste and run `sql/migration_arabic_labels.sql`
+   (not the full `schema.sql` — this only adds the new `labels` table, it won't touch
+   your existing branches or saved months).
+2. On your Mac, back in the project folder in Terminal, push the updated code:
+   ```
+   git add .
+   git commit -m "Arabic interface and editable text"
+   git push
+   ```
+   Vercel will automatically detect the push and redeploy your site within a minute or two.
+
+**Editing any title, label, or column name:** go to **Settings → تحرير نصوص الموقع** (Edit
+Site Text). Every heading, card title, table column, and button label is grouped there and
+editable — change any of them and click the save button under that group.
+
+**Branch and earning-source names** were already editable directly on the Dashboard before
+this update (type right into the name field) — that hasn't changed, it just now defaults to
+Arabic names.
+
+**Numbers stay in Western digits (0–9)** everywhere, including money amounts and the year —
+only the surrounding text and month names are in Arabic.
+
+---
+
 ## One assumption I made — please confirm
 
 In your spreadsheet, the last row was labeled *"final total income **+** electricity, water,

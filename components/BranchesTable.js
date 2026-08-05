@@ -1,6 +1,7 @@
 'use client';
 
 import { fmtMoney, toNumber } from '../lib/utils';
+import { useLabels } from '../lib/LabelsContext';
 
 export default function BranchesTable({
   branches,
@@ -10,6 +11,8 @@ export default function BranchesTable({
   onAddBranch,
   onRemoveBranch,
 }) {
+  const { t } = useLabels();
+
   const totals = branches.reduce(
     (acc, b) => {
       const row = branchData[b.id] || { income: 0, expenses: 0 };
@@ -25,15 +28,15 @@ export default function BranchesTable({
     <div className="panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--teal-600)' }}>🏦</div>
-        <h3 className="panel-title">Income Summary by Branch</h3>
+        <h3 className="panel-title">{t('branches_panel_title')}</h3>
       </div>
       <table className="grid-table">
         <thead>
           <tr>
-            <th>Branch</th>
-            <th className="right">Total Income</th>
-            <th className="right">Total Expenses</th>
-            <th className="right">Net Income</th>
+            <th>{t('branches_col_branch')}</th>
+            <th className="right">{t('branches_col_income')}</th>
+            <th className="right">{t('branches_col_expenses')}</th>
+            <th className="right">{t('branches_col_net')}</th>
             <th></th>
           </tr>
         </thead>
@@ -54,6 +57,7 @@ export default function BranchesTable({
                   <input
                     className="cell-input"
                     type="number"
+                    dir="ltr"
                     value={row.income}
                     onChange={(e) => onChangeCell(b.id, 'income', e.target.value)}
                   />
@@ -62,6 +66,7 @@ export default function BranchesTable({
                   <input
                     className="cell-input"
                     type="number"
+                    dir="ltr"
                     value={row.expenses}
                     onChange={(e) => onChangeCell(b.id, 'expenses', e.target.value)}
                   />
@@ -74,7 +79,7 @@ export default function BranchesTable({
             );
           })}
           <tr className="total-row">
-            <td>Total</td>
+            <td>{t('branches_total_row')}</td>
             <td className="right">{fmtMoney(totals.income)}</td>
             <td className="right">{fmtMoney(totals.expenses)}</td>
             <td className="right">{fmtMoney(totalNet)}</td>
@@ -82,7 +87,7 @@ export default function BranchesTable({
           </tr>
         </tbody>
       </table>
-      <button className="add-row-btn" onClick={onAddBranch}>+ Add branch</button>
+      <button className="add-row-btn" onClick={onAddBranch}>{t('branches_add_btn')}</button>
     </div>
   );
 }

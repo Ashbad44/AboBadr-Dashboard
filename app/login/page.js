@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
+import { useLabels } from '../../lib/LabelsContext';
 
 export default function LoginPage() {
   const router = useRouter();
+  const { t } = useLabels();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
@@ -30,7 +32,6 @@ export default function LoginPage() {
       return;
     }
 
-    // Check whether this account needs a second factor (TOTP)
     const { data: aal } = await supabase.auth.mfa.getAuthenticatorAssuranceLevel();
 
     if (aal.nextLevel === 'aal2' && aal.nextLevel !== aal.currentLevel) {
@@ -69,7 +70,7 @@ export default function LoginPage() {
     });
 
     if (verifyError) {
-      setError('Incorrect code — try again.');
+      setError('رمز غير صحيح — حاول مرة أخرى.');
       setLoading(false);
       return;
     }
@@ -83,13 +84,14 @@ export default function LoginPage() {
       <div className="auth-card">
         {stage === 'password' ? (
           <>
-            <h1 className="auth-title">Sign in</h1>
-            <p className="auth-sub">Monthly Earning Report</p>
+            <h1 className="auth-title">{t('login_title')}</h1>
+            <p className="auth-sub">{t('login_subtitle')}</p>
             <form onSubmit={handlePasswordSubmit}>
               <div className="field">
-                <label>Email</label>
+                <label>{t('login_email')}</label>
                 <input
                   type="email"
+                  dir="ltr"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -97,29 +99,31 @@ export default function LoginPage() {
                 />
               </div>
               <div className="field">
-                <label>Password</label>
+                <label>{t('login_password')}</label>
                 <input
                   type="password"
+                  dir="ltr"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
               <button className="primary-btn" disabled={loading}>
-                {loading ? 'Signing in…' : 'Sign in'}
+                {loading ? t('login_submit_loading') : t('login_submit')}
               </button>
               {error && <p className="error-text">{error}</p>}
             </form>
           </>
         ) : (
           <>
-            <h1 className="auth-title">Enter your code</h1>
-            <p className="auth-sub">Open your authenticator app and enter the 6-digit code</p>
+            <h1 className="auth-title">{t('login_otp_title')}</h1>
+            <p className="auth-sub">{t('login_otp_subtitle')}</p>
             <form onSubmit={handleOtpSubmit}>
               <div className="field">
-                <label>Authenticator code</label>
+                <label>{t('login_otp_label')}</label>
                 <input
                   type="text"
+                  dir="ltr"
                   inputMode="numeric"
                   maxLength={6}
                   value={otp}
@@ -129,7 +133,7 @@ export default function LoginPage() {
                 />
               </div>
               <button className="primary-btn" disabled={loading}>
-                {loading ? 'Verifying…' : 'Verify'}
+                {loading ? t('login_otp_submit_loading') : t('login_otp_submit')}
               </button>
               {error && <p className="error-text">{error}</p>}
             </form>

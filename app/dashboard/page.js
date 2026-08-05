@@ -10,6 +10,7 @@ import MonthPicker from '../../components/MonthPicker';
 import BranchesTable from '../../components/BranchesTable';
 import DeductionsPanel from '../../components/DeductionsPanel';
 import EarningSourcesTable from '../../components/EarningSourcesTable';
+import { useLabels } from '../../lib/LabelsContext';
 
 const EMPTY_DEDUCTIONS = {
   other_deduction: 0,
@@ -20,6 +21,7 @@ const EMPTY_DEDUCTIONS = {
 
 export default function DashboardPage() {
   const router = useRouter();
+  const { t } = useLabels();
   const [checkingSession, setCheckingSession] = useState(true);
 
   const [month, setMonth] = useState(currentMonthValue());
@@ -225,7 +227,7 @@ export default function DashboardPage() {
     finalMonthlyReview,
   };
 
-  if (checkingSession) return <div className="loading-screen">Loading…</div>;
+  if (checkingSession) return <div className="loading-screen">جارٍ التحميل…</div>;
 
   return (
     <div className="app-shell">
@@ -233,16 +235,16 @@ export default function DashboardPage() {
       <div className="main">
         <div className="top-row">
           <div>
-            <h1 className="page-title">Monthly Earning Report</h1>
+            <h1 className="page-title">{t('app_title')}</h1>
             <p className="page-subtitle">
-              Financial overview and summary{saving ? ' · saving…' : ''}
+              {t('app_subtitle')}{saving ? ` ${t('saving_note')}` : ''}
             </p>
           </div>
           <MonthPicker value={month} onChange={setMonth} />
         </div>
 
         {loadingMonth ? (
-          <div className="loading-screen" style={{ minHeight: 200 }}>Loading {monthLabel(month)}…</div>
+          <div className="loading-screen" style={{ minHeight: 200 }}>جارٍ تحميل {monthLabel(month)}…</div>
         ) : (
           <>
             <SummaryCards totals={totals} />

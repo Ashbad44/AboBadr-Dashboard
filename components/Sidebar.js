@@ -2,15 +2,17 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '../lib/supabaseClient';
-
-const LINKS = [
-  { href: '/dashboard', label: 'Dashboard', icon: '🏠' },
-  { href: '/settings', label: 'Settings', icon: '⚙️' },
-];
+import { useLabels } from '../lib/LabelsContext';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useLabels();
+
+  const LINKS = [
+    { href: '/dashboard', label: t('nav_dashboard'), icon: '🏠' },
+    { href: '/settings', label: t('nav_settings'), icon: '⚙️' },
+  ];
 
   async function handleSignOut() {
     await supabase.auth.signOut();
@@ -31,7 +33,7 @@ export default function Sidebar() {
         </a>
       ))}
       <div className="sidebar-footer">
-        <button onClick={handleSignOut}>Sign out</button>
+        <button onClick={handleSignOut}>{t('sign_out')}</button>
       </div>
     </div>
   );

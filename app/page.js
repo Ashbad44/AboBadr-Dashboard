@@ -17,5 +17,5 @@ export default function Home() {
     });
   }, [router]);
 
-  return <div className="loading-screen">Loading…</div>;
+  return <div className="loading-screen">جارٍ التحميل…</div>;
 }

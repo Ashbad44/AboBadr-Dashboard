@@ -1,6 +1,7 @@
 'use client';
 
 import { fmtMoney, toNumber } from '../lib/utils';
+import { useLabels } from '../lib/LabelsContext';
 
 export default function EarningSourcesTable({
   sources,
@@ -10,19 +11,20 @@ export default function EarningSourcesTable({
   onAddSource,
   onRemoveSource,
 }) {
+  const { t } = useLabels();
   const total = sources.reduce((sum, s) => sum + toNumber((sourceData[s.id] || {}).amount), 0);
 
   return (
     <div className="panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--teal-500)' }}>💼</div>
-        <h3 className="panel-title">Earning Sources</h3>
+        <h3 className="panel-title">{t('sources_panel_title')}</h3>
       </div>
       <table className="grid-table">
         <thead>
           <tr>
-            <th>Source</th>
-            <th className="right">Amount</th>
+            <th>{t('sources_col_source')}</th>
+            <th className="right">{t('sources_col_amount')}</th>
             <th></th>
           </tr>
         </thead>
@@ -42,6 +44,7 @@ export default function EarningSourcesTable({
                   <input
                     className="cell-input"
                     type="number"
+                    dir="ltr"
                     value={row.amount}
                     onChange={(e) => onChangeAmount(s.id, e.target.value)}
                   />
@@ -53,13 +56,13 @@ export default function EarningSourcesTable({
             );
           })}
           <tr className="total-row">
-            <td>Total for All Earning Sources</td>
+            <td>{t('sources_total_row')}</td>
             <td className="right">{fmtMoney(total)}</td>
             <td></td>
           </tr>
         </tbody>
       </table>
-      <button className="add-row-btn" onClick={onAddSource}>+ Add source</button>
+      <button className="add-row-btn" onClick={onAddSource}>{t('sources_add_btn')}</button>
     </div>
   );
 }
