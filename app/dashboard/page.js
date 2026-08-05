@@ -10,6 +10,7 @@ import MonthPicker from '../../components/MonthPicker';
 import BranchesTable from '../../components/BranchesTable';
 import DeductionsPanel from '../../components/DeductionsPanel';
 import EarningSourcesTable from '../../components/EarningSourcesTable';
+import SmsLedgerPanel from '../../components/SmsLedgerPanel';
 import { useLabels } from '../../lib/LabelsContext';
 
 const EMPTY_DEDUCTIONS = {
@@ -27,6 +28,7 @@ export default function DashboardPage() {
   const [month, setMonth] = useState(currentMonthValue());
   const [branches, setBranches] = useState([]);
   const [sources, setSources] = useState([]);
+  const [smsSources, setSmsSources] = useState([]);
   const [branchData, setBranchData] = useState({}); // { branchId: {income, expenses} }
   const [sourceData, setSourceData] = useState({}); // { sourceId: {amount} }
   const [deductions, setDeductions] = useState(EMPTY_DEDUCTIONS);
@@ -61,6 +63,13 @@ export default function DashboardPage() {
       .eq('archived', false)
       .order('sort_order', { ascending: true });
     setSources(sourceRows || []);
+
+    const { data: smsRows } = await supabase
+      .from('sms_sources')
+      .select('*')
+      .eq('archived', false)
+      .order('sort_order', { ascending: true });
+    setSmsSources(smsRows || []);
   }, []);
 
   // --- load a given month's data ---
@@ -142,14 +151,14 @@ export default function DashboardPage() {
   async function handleAddBranch() {
     const { data, error } = await supabase
       .from('branches')
-      .insert({ name: `Branch ${branches.length + 1}`, sort_order: branches.length + 1 })
+      .insert({ name: `فرع ${branches.length + 1}`, sort_order: branches.length + 1 })
       .select()
       .single();
     if (!error && data) setBranches((prev) => [...prev, data]);
   }
 
   async function handleRemoveBranch(branchId) {
-    if (!confirm('Remove this branch? Past months already saved will keep their history.')) return;
+    if (!confirm('إزالة هذا الفرع؟ ستبقى بيانات الأشهر السابقة محفوظة.')) return;
     await supabase.from('branches').update({ archived: true }).eq('id', branchId);
     setBranches((prev) => prev.filter((b) => b.id !== branchId));
   }
@@ -178,16 +187,23 @@ export default function DashboardPage() {
   async function handleAddSource() {
     const { data, error } = await supabase
       .from('earning_sources')
-      .insert({ name: `Source ${sources.length + 1}`, sort_order: sources.length + 1 })
+      .insert({ name: `مصدر ${sources.length + 1}`, sort_order: sources.length + 1 })
       .select()
       .single();
     if (!error && data) setSources((prev) => [...prev, data]);
   }
 
   async function handleRemoveSource(sourceId) {
-    if (!confirm('Remove this earning source? Past months already saved will keep their history.')) return;
+    if (!confirm('إزالة مصدر الدخل هذا؟ ستبقى بيانات الأشهر السابقة محفوظة.')) return;
     await supabase.from('earning_sources').update({ archived: true }).eq('id', sourceId);
     setSources((prev) => prev.filter((s) => s.id !== sourceId));
+  }
+
+  async function handleRenameSmsSource(sourceId, name) {
+    setSmsSources((prev) => prev.map((s) => (s.id === sourceId ? { ...s, name } : s)));
+    scheduleSave(async () => {
+      await supabase.from('sms_sources').update({ name }).eq('id', sourceId);
+    });
   }
 
   function handleChangeDeduction(field, value) {
@@ -272,6 +288,10 @@ export default function DashboardPage() {
                   totals={totals}
                   deductions={deductions}
                   onChangeDeduction={handleChangeDeduction}
+                />
+                <SmsLedgerPanel
+                  sources={smsSources}
+                  onRenameSource={handleRenameSmsSource}
                 />
               </div>
             </div>
