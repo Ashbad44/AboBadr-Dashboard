@@ -11,6 +11,7 @@ import BranchesTable from '../../components/BranchesTable';
 import DeductionsPanel from '../../components/DeductionsPanel';
 import EarningSourcesTable from '../../components/EarningSourcesTable';
 import SmsLedgerPanel from '../../components/SmsLedgerPanel';
+import CashColumnsPanel from '../../components/CashColumnsPanel';
 import { useLabels } from '../../lib/LabelsContext';
 
 const EMPTY_DEDUCTIONS = {
@@ -29,6 +30,7 @@ export default function DashboardPage() {
   const [branches, setBranches] = useState([]);
   const [sources, setSources] = useState([]);
   const [smsSources, setSmsSources] = useState([]);
+  const [cashSources, setCashSources] = useState([]);
   const [branchData, setBranchData] = useState({}); // { branchId: {income, expenses} }
   const [sourceData, setSourceData] = useState({}); // { sourceId: {amount} }
   const [deductions, setDeductions] = useState(EMPTY_DEDUCTIONS);
@@ -70,6 +72,13 @@ export default function DashboardPage() {
       .eq('archived', false)
       .order('sort_order', { ascending: true });
     setSmsSources(smsRows || []);
+
+    const { data: cashRows } = await supabase
+      .from('column_sources')
+      .select('*')
+      .eq('archived', false)
+      .order('sort_order', { ascending: true });
+    setCashSources(cashRows || []);
   }, []);
 
   // --- load a given month's data ---
@@ -293,6 +302,7 @@ export default function DashboardPage() {
                   sources={smsSources}
                   onRenameSource={handleRenameSmsSource}
                 />
+                <CashColumnsPanel sources={cashSources} />
               </div>
             </div>
           </>
