@@ -213,9 +213,9 @@ export default function DashboardPage() {
   const totalDeductions = toNumber(deductions.other_deduction);
   const finalTotalIncome = incomeBeforeDeductions - totalDeductions;
   const finalMonthlyReview =
-    finalTotalIncome -
-    toNumber(deductions.electricity_water) -
-    toNumber(deductions.salaries) -
+    finalTotalIncome +
+    toNumber(deductions.electricity_water) +
+    toNumber(deductions.salaries) +
     toNumber(deductions.other_payment);
 
   const totals = {
