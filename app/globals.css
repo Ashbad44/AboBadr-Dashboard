@@ -423,6 +423,22 @@ table.grid-table input.cell-input {
   font-size: 13px;
 }
 
+.print-btn {
+  margin-top: 8px;
+  border: none;
+  background: var(--teal-900);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.print-btn:hover {
+  background: var(--teal-800);
+}
+
 .kv-list .kv-row {
   display: flex;
   justify-content: space-between;
@@ -535,4 +551,170 @@ table.grid-table input.cell-input {
   align-items: center;
   gap: 12px;
   padding: 16px 0;
+}
+
+/* ============================================================
+   PRINT — keeps the site's look (colors, layout, icons) but
+   compacts everything so a tab fits in as few pages as possible.
+   Only the active tab's DOM exists at print time, so this
+   automatically prints "just that tab" with no extra JS needed.
+   ============================================================ */
+@media print {
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color-adjust: exact !important;
+  }
+
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  body {
+    background: #fff;
+  }
+
+  /* Hide everything that isn't part of the printed report */
+  .sidebar,
+  .tab-nav,
+  .print-btn,
+  .add-row-btn,
+  .remove-btn,
+  .month-select,
+  .loading-screen {
+    display: none !important;
+  }
+
+  .app-shell {
+    display: block;
+  }
+
+  .main {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .top-row {
+    margin-bottom: 12px;
+  }
+
+  .page-title {
+    font-size: 18px;
+  }
+
+  .page-subtitle {
+    font-size: 11px;
+  }
+
+  .year-pill {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  /* Summary cards — keep the 5-card row but compact it */
+  .cards-row {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .stat-card {
+    padding: 8px 10px;
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+
+  .stat-icon {
+    width: 26px;
+    height: 26px;
+    font-size: 12px;
+  }
+
+  .stat-title {
+    font-size: 9px;
+  }
+
+  .stat-value {
+    font-size: 14px;
+  }
+
+  .stat-note {
+    font-size: 8px;
+  }
+
+  .stat-card.highlight-card .stat-value {
+    font-size: 15px;
+  }
+
+  /* Panels */
+  .tab-page {
+    gap: 12px;
+    max-width: 100%;
+  }
+
+  .panel,
+  .panel-large {
+    box-shadow: none !important;
+    border: 1px solid #d5dcdc;
+    padding: 12px 14px;
+    break-inside: avoid;
+  }
+
+  .panel-header {
+    margin-bottom: 8px;
+    gap: 8px;
+  }
+
+  .panel-icon {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+
+  .panel-title,
+  .panel-large .panel-title {
+    font-size: 13px;
+  }
+
+  table.grid-table,
+  .panel-large table.grid-table {
+    font-size: 10.5px;
+  }
+
+  table.grid-table thead th,
+  .panel-large table.grid-table thead th {
+    padding: 5px 8px;
+    font-size: 9.5px;
+  }
+
+  table.grid-table tbody td,
+  .panel-large table.grid-table tbody td {
+    padding: 5px 8px;
+  }
+
+  .kv-row,
+  .panel-large .kv-row {
+    padding: 6px 8px;
+    font-size: 10.5px;
+  }
+
+  .final-banner,
+  .panel-large .final-banner {
+    font-size: 11.5px;
+    padding: 8px 10px;
+  }
+
+  /* Turn editable inputs into plain-looking values for print */
+  input.cell-input,
+  input.branch-name-input {
+    border: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+  }
+
+  input.cell-input {
+    width: auto;
+    min-width: 36px;
+  }
 }

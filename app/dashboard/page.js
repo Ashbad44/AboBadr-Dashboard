@@ -14,6 +14,7 @@ import EarningSourcesTable from '../../components/EarningSourcesTable';
 import SmsLedgerPanel from '../../components/SmsLedgerPanel';
 import CashColumnsPanel from '../../components/CashColumnsPanel';
 import Tabs from '../../components/Tabs';
+import PrintButton from '../../components/PrintButton';
 import { useLabels } from '../../lib/LabelsContext';
 
 const EMPTY_DEDUCTIONS = {
@@ -359,6 +360,7 @@ export default function DashboardPage() {
                   deductions={deductions}
                   onChangeDeduction={handleChangeDeduction}
                 />
+                <PrintButton />
               </div>
             )}
 
@@ -383,6 +385,7 @@ export default function DashboardPage() {
                   onAddOtherDeductionType={handleAddOtherDeductionType}
                   onRemoveOtherDeductionType={handleRemoveOtherDeductionType}
                 />
+                <PrintButton />
               </div>
             )}
 
@@ -393,6 +396,7 @@ export default function DashboardPage() {
                   onRenameSource={handleRenameSmsSource}
                 />
                 <CashColumnsPanel sources={cashSources} />
+                <PrintButton />
               </div>
             )}
           </>
