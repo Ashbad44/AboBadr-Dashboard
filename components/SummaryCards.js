@@ -46,8 +46,8 @@ export default function SummaryCards({ totals }) {
 
   return (
     <div className="cards-row">
-      {cards.map((c) => (
-        <div className="stat-card" key={c.title}>
+      {cards.map((c, i) => (
+        <div className={`stat-card ${i === cards.length - 1 ? 'highlight-card' : ''}`} key={c.title}>
           <div className="stat-icon" style={{ background: c.color }}>{c.icon}</div>
           <div>
             <p className="stat-title">{c.title}</p>

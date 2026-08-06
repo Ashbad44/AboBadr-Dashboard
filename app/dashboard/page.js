@@ -8,10 +8,12 @@ import Sidebar from '../../components/Sidebar';
 import SummaryCards from '../../components/SummaryCards';
 import MonthPicker from '../../components/MonthPicker';
 import BranchesTable from '../../components/BranchesTable';
-import DeductionsPanel from '../../components/DeductionsPanel';
+import DeductionsOverviewPanel from '../../components/DeductionsOverviewPanel';
+import FinalReviewPanel from '../../components/FinalReviewPanel';
 import EarningSourcesTable from '../../components/EarningSourcesTable';
 import SmsLedgerPanel from '../../components/SmsLedgerPanel';
 import CashColumnsPanel from '../../components/CashColumnsPanel';
+import Tabs from '../../components/Tabs';
 import { useLabels } from '../../lib/LabelsContext';
 
 const EMPTY_DEDUCTIONS = {
@@ -38,6 +40,7 @@ export default function DashboardPage() {
   const [deductions, setDeductions] = useState(EMPTY_DEDUCTIONS);
   const [loadingMonth, setLoadingMonth] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [activeTab, setActiveTab] = useState('branches');
 
   const saveTimer = useRef(null);
 
@@ -330,8 +333,19 @@ export default function DashboardPage() {
         ) : (
           <>
             <SummaryCards totals={totals} />
-            <div className="panels-grid">
-              <div>
+
+            <Tabs
+              tabs={[
+                { key: 'branches', label: t('tab_branches') },
+                { key: 'reconciliation', label: t('tab_reconciliation') },
+                { key: 'transfers', label: t('tab_transfers') },
+              ]}
+              active={activeTab}
+              onChange={setActiveTab}
+            />
+
+            {activeTab === 'branches' && (
+              <div className="tab-page">
                 <BranchesTable
                   branches={branches}
                   branchData={branchData}
@@ -340,6 +354,16 @@ export default function DashboardPage() {
                   onAddBranch={handleAddBranch}
                   onRemoveBranch={handleRemoveBranch}
                 />
+                <DeductionsOverviewPanel
+                  totals={totals}
+                  deductions={deductions}
+                  onChangeDeduction={handleChangeDeduction}
+                />
+              </div>
+            )}
+
+            {activeTab === 'reconciliation' && (
+              <div className="tab-page">
                 <EarningSourcesTable
                   sources={sources}
                   sourceData={sourceData}
@@ -348,9 +372,7 @@ export default function DashboardPage() {
                   onAddSource={handleAddSource}
                   onRemoveSource={handleRemoveSource}
                 />
-              </div>
-              <div>
-                <DeductionsPanel
+                <FinalReviewPanel
                   totals={totals}
                   deductions={deductions}
                   onChangeDeduction={handleChangeDeduction}
@@ -361,13 +383,18 @@ export default function DashboardPage() {
                   onAddOtherDeductionType={handleAddOtherDeductionType}
                   onRemoveOtherDeductionType={handleRemoveOtherDeductionType}
                 />
+              </div>
+            )}
+
+            {activeTab === 'transfers' && (
+              <div className="tab-page">
                 <SmsLedgerPanel
                   sources={smsSources}
                   onRenameSource={handleRenameSmsSource}
                 />
                 <CashColumnsPanel sources={cashSources} />
               </div>
-            </div>
+            )}
           </>
         )}
       </div>
