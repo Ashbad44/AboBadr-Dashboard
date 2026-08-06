@@ -3,7 +3,17 @@
 import { fmtMoney } from '../lib/utils';
 import { useLabels } from '../lib/LabelsContext';
 
-export default function DeductionsPanel({ totals, deductions, onChangeDeduction }) {
+export default function DeductionsPanel({
+  totals,
+  deductions,
+  onChangeDeduction,
+  otherDeductionTypes,
+  otherDeductionData,
+  onChangeOtherDeductionAmount,
+  onRenameOtherDeductionType,
+  onAddOtherDeductionType,
+  onRemoveOtherDeductionType,
+}) {
   const { t } = useLabels();
 
   return (
@@ -65,17 +75,35 @@ export default function DeductionsPanel({ totals, deductions, onChangeDeduction 
               onChange={(e) => onChangeDeduction('salaries', e.target.value)}
             />
           </div>
-          <div className="kv-row">
-            <span className="kv-label">{t('review_other_payment')}</span>
-            <input
-              className="cell-input"
-              type="number"
-              dir="ltr"
-              value={deductions.other_payment}
-              onChange={(e) => onChangeDeduction('other_payment', e.target.value)}
-            />
-          </div>
+
+          {/* Editable, addable list of "other payment" line items */}
+          {otherDeductionTypes.map((dt) => {
+            const row = otherDeductionData[dt.id] || { amount: 0 };
+            return (
+              <div className="kv-row" key={dt.id}>
+                <input
+                  className="branch-name-input"
+                  style={{ maxWidth: 160 }}
+                  value={dt.name}
+                  onChange={(e) => onRenameOtherDeductionType(dt.id, e.target.value)}
+                />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <input
+                    className="cell-input"
+                    type="number"
+                    dir="ltr"
+                    value={row.amount}
+                    onChange={(e) => onChangeOtherDeductionAmount(dt.id, e.target.value)}
+                  />
+                  <button className="remove-btn" onClick={() => onRemoveOtherDeductionType(dt.id)}>✕</button>
+                </div>
+              </div>
+            );
+          })}
         </div>
+        <button className="add-row-btn" onClick={onAddOtherDeductionType}>
+          {t('other_deductions_add_btn')}
+        </button>
         <div className="final-banner">
           <span>{t('review_final_banner')}</span>
           <span>{fmtMoney(totals.finalMonthlyReview)}</span>

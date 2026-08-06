@@ -31,6 +31,8 @@ export default function DashboardPage() {
   const [sources, setSources] = useState([]);
   const [smsSources, setSmsSources] = useState([]);
   const [cashSources, setCashSources] = useState([]);
+  const [otherDeductionTypes, setOtherDeductionTypes] = useState([]);
+  const [otherDeductionData, setOtherDeductionData] = useState({}); // { typeId: {amount} }
   const [branchData, setBranchData] = useState({}); // { branchId: {income, expenses} }
   const [sourceData, setSourceData] = useState({}); // { sourceId: {amount} }
   const [deductions, setDeductions] = useState(EMPTY_DEDUCTIONS);
@@ -79,6 +81,13 @@ export default function DashboardPage() {
       .eq('archived', false)
       .order('sort_order', { ascending: true });
     setCashSources(cashRows || []);
+
+    const { data: odtRows } = await supabase
+      .from('other_deduction_types')
+      .select('*')
+      .eq('archived', false)
+      .order('sort_order', { ascending: true });
+    setOtherDeductionTypes(odtRows || []);
   }, []);
 
   // --- load a given month's data ---
@@ -112,6 +121,14 @@ export default function DashboardPage() {
       salaries: ded.salaries,
       other_payment: ded.other_payment,
     } : EMPTY_DEDUCTIONS);
+
+    const { data: odd } = await supabase
+      .from('monthly_other_deduction_data')
+      .select('*')
+      .eq('month', monthValue);
+    const oddMap = {};
+    (odd || []).forEach((r) => { oddMap[r.deduction_type_id] = { amount: r.amount }; });
+    setOtherDeductionData(oddMap);
 
     setLoadingMonth(false);
   }, []);
@@ -231,17 +248,57 @@ export default function DashboardPage() {
     });
   }
 
+  function handleChangeOtherDeductionAmount(typeId, value) {
+    setOtherDeductionData((prev) => {
+      const next = { ...prev, [typeId]: { amount: value } };
+      scheduleSave(async () => {
+        await supabase.from('monthly_other_deduction_data').upsert({
+          month,
+          deduction_type_id: typeId,
+          amount: toNumber(value),
+        }, { onConflict: 'month,deduction_type_id' });
+      });
+      return next;
+    });
+  }
+
+  async function handleRenameOtherDeductionType(typeId, name) {
+    setOtherDeductionTypes((prev) => prev.map((d) => (d.id === typeId ? { ...d, name } : d)));
+    scheduleSave(async () => {
+      await supabase.from('other_deduction_types').update({ name }).eq('id', typeId);
+    });
+  }
+
+  async function handleAddOtherDeductionType() {
+    const { data, error } = await supabase
+      .from('other_deduction_types')
+      .insert({ name: `مدفوعات أخرى ${otherDeductionTypes.length + 1}`, sort_order: otherDeductionTypes.length + 1 })
+      .select()
+      .single();
+    if (!error && data) setOtherDeductionTypes((prev) => [...prev, data]);
+  }
+
+  async function handleRemoveOtherDeductionType(typeId) {
+    if (!confirm('إزالة بند الاستقطاع هذا؟ ستبقى بيانات الأشهر السابقة محفوظة.')) return;
+    await supabase.from('other_deduction_types').update({ archived: true }).eq('id', typeId);
+    setOtherDeductionTypes((prev) => prev.filter((d) => d.id !== typeId));
+  }
+
   // --- derived totals (all client-side, live, like Excel formulas) ---
   const totalIncome = branches.reduce((s, b) => s + toNumber((branchData[b.id] || {}).income), 0);
   const totalExpenses = branches.reduce((s, b) => s + toNumber((branchData[b.id] || {}).expenses), 0);
   const incomeBeforeDeductions = totalIncome - totalExpenses;
   const totalDeductions = toNumber(deductions.other_deduction);
   const finalTotalIncome = incomeBeforeDeductions - totalDeductions;
+  const otherDeductionsTotal = otherDeductionTypes.reduce(
+    (sum, dt) => sum + toNumber((otherDeductionData[dt.id] || {}).amount),
+    0
+  );
   const finalMonthlyReview =
     incomeBeforeDeductions +
     toNumber(deductions.electricity_water) +
     toNumber(deductions.salaries) +
-    toNumber(deductions.other_payment);
+    otherDeductionsTotal;
 
   const totals = {
     totalIncome,
@@ -297,6 +354,12 @@ export default function DashboardPage() {
                   totals={totals}
                   deductions={deductions}
                   onChangeDeduction={handleChangeDeduction}
+                  otherDeductionTypes={otherDeductionTypes}
+                  otherDeductionData={otherDeductionData}
+                  onChangeOtherDeductionAmount={handleChangeOtherDeductionAmount}
+                  onRenameOtherDeductionType={handleRenameOtherDeductionType}
+                  onAddOtherDeductionType={handleAddOtherDeductionType}
+                  onRemoveOtherDeductionType={handleRemoveOtherDeductionType}
                 />
                 <SmsLedgerPanel
                   sources={smsSources}
