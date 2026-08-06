@@ -43,7 +43,7 @@ export default function DeductionsPanel({ totals, deductions, onChangeDeduction 
         <div className="kv-list">
           <div className="kv-row">
             <span className="kv-label">{t('review_from_upper_table')}</span>
-            <span>{fmtMoney(totals.finalTotalIncome)}</span>
+            <span>{fmtMoney(totals.incomeBeforeDeductions)}</span>
           </div>
           <div className="kv-row">
             <span className="kv-label">{t('review_electricity_water')}</span>
