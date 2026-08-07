@@ -142,7 +142,6 @@ export default function SettingsPage() {
                     type="text"
                     dir="ltr"
                     inputMode="numeric"
-                    lang="en"
                     maxLength={6}
                     value={verifyCode}
                     onChange={(e) => setVerifyCode(e.target.value)}

@@ -58,7 +58,6 @@ export default function BranchesTable({
                     className="cell-input"
                     type="number"
                     dir="ltr"
-                    lang="en"
                     value={row.income}
                     onChange={(e) => onChangeCell(b.id, 'income', e.target.value)}
                   />
@@ -68,7 +67,6 @@ export default function BranchesTable({
                     className="cell-input"
                     type="number"
                     dir="ltr"
-                    lang="en"
                     value={row.expenses}
                     onChange={(e) => onChangeCell(b.id, 'expenses', e.target.value)}
                   />

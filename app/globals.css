@@ -153,10 +153,6 @@ input, select {
   border: none;
 }
 
-.print-month-label {
-  display: none;
-}
-
 /* ---------- Tabs ---------- */
 .tab-nav {
   display: flex;
@@ -614,14 +610,6 @@ table.grid-table input.cell-input {
   .year-pill {
     font-size: 12px;
     padding: 4px 10px;
-  }
-
-  .print-month-label {
-    display: inline-block;
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--teal-900);
-    margin-inline-end: 8px;
   }
 
   /* Summary cards — keep the 5-card row but compact it */

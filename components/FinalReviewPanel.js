@@ -33,7 +33,6 @@ export default function FinalReviewPanel({
             className="cell-input"
             type="number"
             dir="ltr"
-            lang="en"
             value={deductions.electricity_water}
             onChange={(e) => onChangeDeduction('electricity_water', e.target.value)}
           />
@@ -44,7 +43,6 @@ export default function FinalReviewPanel({
             className="cell-input"
             type="number"
             dir="ltr"
-            lang="en"
             value={deductions.salaries}
             onChange={(e) => onChangeDeduction('salaries', e.target.value)}
           />
@@ -66,7 +64,6 @@ export default function FinalReviewPanel({
                   className="cell-input"
                   type="number"
                   dir="ltr"
-                  lang="en"
                   value={row.amount}
                   onChange={(e) => onChangeOtherDeductionAmount(dt.id, e.target.value)}
                 />

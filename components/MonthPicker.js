@@ -1,6 +1,6 @@
 'use client';
 
-import { recentMonthOptions, monthLabel } from '../lib/utils';
+import { recentMonthOptions } from '../lib/utils';
 
 export default function MonthPicker({ value, onChange }) {
   const options = recentMonthOptions(36);
@@ -13,8 +13,6 @@ export default function MonthPicker({ value, onChange }) {
           <option key={o.value} value={o.value}>{o.label}</option>
         ))}
       </select>
-      {/* Shown only when printing, since the dropdown itself is hidden then */}
-      <span className="print-month-label">{monthLabel(value)}</span>
       <span className="year-pill">{year}</span>
     </div>
   );
