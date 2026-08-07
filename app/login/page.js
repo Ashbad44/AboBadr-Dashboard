@@ -125,6 +125,7 @@ export default function LoginPage() {
                   type="text"
                   dir="ltr"
                   inputMode="numeric"
+                  lang="en"
                   maxLength={6}
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}

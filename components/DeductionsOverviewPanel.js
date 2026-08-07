@@ -23,6 +23,7 @@ export default function DeductionsOverviewPanel({ totals, deductions, onChangeDe
             className="cell-input"
             type="number"
             dir="ltr"
+            lang="en"
             value={deductions.other_deduction}
             onChange={(e) => onChangeDeduction('other_deduction', e.target.value)}
           />
