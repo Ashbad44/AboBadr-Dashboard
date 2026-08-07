@@ -45,6 +45,7 @@ export default function EarningSourcesTable({
                     className="cell-input"
                     type="number"
                     dir="ltr"
+                    lang="en"
                     value={row.amount}
                     onChange={(e) => onChangeAmount(s.id, e.target.value)}
                   />
