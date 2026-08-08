@@ -592,6 +592,7 @@ table.grid-table input.cell-input {
 
   .app-shell {
     display: block;
+    zoom: 1 !important;
   }
 
   .main {

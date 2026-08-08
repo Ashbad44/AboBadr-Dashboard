@@ -26,7 +26,7 @@ const EMPTY_DEDUCTIONS = {
 
 export default function DashboardPage() {
   const router = useRouter();
-  const { t } = useLabels();
+  const { t, labels } = useLabels();
   const [checkingSession, setCheckingSession] = useState(true);
 
   const [month, setMonth] = useState(currentMonthValue());
@@ -316,7 +316,7 @@ export default function DashboardPage() {
   if (checkingSession) return <div className="loading-screen">جارٍ التحميل…</div>;
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" style={{ zoom: `${parseInt(labels.ui_text_scale, 10) || 100}%` }}>
       <Sidebar />
       <div className="main">
         <div className="top-row">

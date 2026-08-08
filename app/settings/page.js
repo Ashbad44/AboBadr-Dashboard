@@ -100,16 +100,52 @@ export default function SettingsPage() {
     setMessage('تم حفظ النصوص.');
   }
 
+  const textScale = parseInt(labels.ui_text_scale, 10) || 100;
+  const textScaleOptions = [85, 100, 115, 130, 150];
+
+  function handleTextScaleChange(value) {
+    saveLabels({ ui_text_scale: String(value) });
+  }
+
   if (checkingSession) return <div className="loading-screen">جارٍ التحميل…</div>;
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" style={{ zoom: `${textScale}%` }}>
       <Sidebar />
       <div className="main">
         <div className="top-row">
           <div>
             <h1 className="page-title">{t('settings_title')}</h1>
             <p className="page-subtitle">{t('settings_subtitle')}</p>
+          </div>
+        </div>
+
+        <div className="panel" style={{ maxWidth: 480 }}>
+          <div className="panel-header">
+            <div className="panel-icon" style={{ background: 'var(--blue-500)' }}>🔠</div>
+            <h3 className="panel-title">{t('settings_text_size_title')}</h3>
+          </div>
+          <p style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: -6, marginBottom: 14 }}>
+            {t('settings_text_size_subtitle')}
+          </p>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+            {textScaleOptions.map((opt) => (
+              <button
+                key={opt}
+                onClick={() => handleTextScaleChange(opt)}
+                style={{
+                  padding: '8px 16px',
+                  borderRadius: 8,
+                  border: opt === textScale ? '2px solid var(--teal-600)' : '1px solid var(--border)',
+                  background: opt === textScale ? '#eef6f4' : '#fff',
+                  color: 'var(--text-dark)',
+                  fontWeight: opt === textScale ? 700 : 400,
+                  fontSize: 14,
+                }}
+              >
+                {opt}%
+              </button>
+            ))}
           </div>
         </div>
 
