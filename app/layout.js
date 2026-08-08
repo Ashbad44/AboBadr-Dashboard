@@ -1,5 +1,6 @@
 import './globals.css';
 import { LabelsProvider } from '../lib/LabelsContext';
+import { TextStylesProvider } from '../lib/TextStylesContext';
 
 export const metadata = {
   title: 'تقرير الأرباح الشهري',
@@ -10,7 +11,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="ar" dir="rtl">
       <body>
-        <LabelsProvider>{children}</LabelsProvider>
+        <LabelsProvider>
+          <TextStylesProvider>{children}</TextStylesProvider>
+        </LabelsProvider>
       </body>
     </html>
   );

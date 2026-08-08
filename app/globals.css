@@ -557,6 +557,100 @@ table.grid-table input.cell-input {
   padding: 16px 0;
 }
 
+/* ---------- Font customization toolbar ---------- */
+.styled-label-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.style-toolbar-wrap {
+  position: relative;
+  display: inline-flex;
+}
+
+.style-toolbar-toggle {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 6px;
+  width: 22px;
+  height: 22px;
+  font-size: 11px;
+  color: var(--text-muted);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.style-toolbar-toggle:hover {
+  border-color: var(--teal-500);
+  color: var(--teal-600);
+}
+
+.style-toolbar-popover {
+  position: absolute;
+  top: 26px;
+  inset-inline-start: 0;
+  z-index: 30;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  box-shadow: 0 6px 18px rgba(14, 59, 61, 0.16);
+}
+
+.style-toolbar-bold {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  font-weight: 700;
+  border: 1px solid var(--border);
+  background: #fff;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+.style-toolbar-bold.active {
+  border: 2px solid var(--teal-600);
+  background: #eef6f4;
+  color: var(--teal-800);
+}
+
+.style-toolbar-color {
+  width: 28px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  background: none;
+}
+
+.style-toolbar-size {
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 4px;
+  background: #fff;
+  color: var(--text-dark);
+}
+
+.style-toolbar-reset {
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  width: 22px;
+  height: 26px;
+}
+
+.style-toolbar-reset:hover {
+  color: var(--teal-600);
+}
+
 /* ============================================================
    PRINT — mirrors the dashboard's actual proportions so a tab
    fills the A4 page properly instead of leaving empty space.
@@ -586,7 +680,8 @@ table.grid-table input.cell-input {
   .add-row-btn,
   .remove-btn,
   .month-select,
-  .loading-screen {
+  .loading-screen,
+  .style-toolbar-wrap {
     display: none !important;
   }
 

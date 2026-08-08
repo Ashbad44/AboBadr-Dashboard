@@ -7,10 +7,13 @@ import { supabase } from '../../lib/supabaseClient';
 import Sidebar from '../../components/Sidebar';
 import { useLabels } from '../../lib/LabelsContext';
 import { LABEL_GROUPS } from '../../lib/labels';
+import StyleToolbar from '../../components/StyleToolbar';
+import { useTextStyles, styleToCss } from '../../lib/TextStylesContext';
 
 export default function SettingsPage() {
   const router = useRouter();
   const { t, labels, saveLabels } = useLabels();
+  const { getStyle } = useTextStyles();
   const [checkingSession, setCheckingSession] = useState(true);
   const [factors, setFactors] = useState([]);
   const [enrollData, setEnrollData] = useState(null);
@@ -232,10 +235,14 @@ export default function SettingsPage() {
               </p>
               {group.keys.map((key) => (
                 <div className="field" key={key}>
-                  <input
-                    value={labelDrafts[key] ?? ''}
-                    onChange={(e) => handleLabelDraftChange(key, e.target.value)}
-                  />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <input
+                      value={labelDrafts[key] ?? ''}
+                      onChange={(e) => handleLabelDraftChange(key, e.target.value)}
+                      style={{ ...styleToCss(getStyle('label', key)), flex: 1 }}
+                    />
+                    <StyleToolbar type="label" id={key} />
+                  </div>
                 </div>
               ))}
               <button

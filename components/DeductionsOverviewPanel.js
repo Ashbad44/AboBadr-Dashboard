@@ -2,6 +2,7 @@
 
 import { fmtMoney } from '../lib/utils';
 import { useLabels } from '../lib/LabelsContext';
+import StyledLabel from './StyledLabel';
 
 export default function DeductionsOverviewPanel({ totals, deductions, onChangeDeduction }) {
   const { t } = useLabels();
@@ -10,7 +11,7 @@ export default function DeductionsOverviewPanel({ totals, deductions, onChangeDe
     <div className="panel panel-large">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--orange-500)' }}>📋</div>
-        <h3 className="panel-title">{t('deductions_panel_title')}</h3>
+        <StyledLabel type="label" id="deductions_panel_title" text={t('deductions_panel_title')} as="h3" className="panel-title" />
       </div>
       <div className="kv-list">
         <div className="kv-row">

@@ -2,6 +2,9 @@
 
 import { fmtMoney } from '../lib/utils';
 import { useLabels } from '../lib/LabelsContext';
+import StyledLabel from './StyledLabel';
+import StyleToolbar from './StyleToolbar';
+import { useTextStyles, styleToCss } from '../lib/TextStylesContext';
 
 export default function FinalReviewPanel({
   totals,
@@ -15,12 +18,13 @@ export default function FinalReviewPanel({
   onRemoveOtherDeductionType,
 }) {
   const { t } = useLabels();
+  const { getStyle } = useTextStyles();
 
   return (
     <div className="panel panel-large">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--green-600)' }}>👁️</div>
-        <h3 className="panel-title">{t('review_panel_title')}</h3>
+        <StyledLabel type="label" id="review_panel_title" text={t('review_panel_title')} as="h3" className="panel-title" />
       </div>
       <div className="kv-list">
         <div className="kv-row">
@@ -55,12 +59,15 @@ export default function FinalReviewPanel({
           const row = otherDeductionData[dt.id] || { amount: 0 };
           return (
             <div className="kv-row" key={dt.id}>
-              <input
-                className="branch-name-input"
-                style={{ maxWidth: 200 }}
-                value={dt.name}
-                onChange={(e) => onRenameOtherDeductionType(dt.id, e.target.value)}
-              />
+              <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                <input
+                  className="branch-name-input"
+                  style={{ maxWidth: 180, ...styleToCss(getStyle('other_deduction_type', dt.id)) }}
+                  value={dt.name}
+                  onChange={(e) => onRenameOtherDeductionType(dt.id, e.target.value)}
+                />
+                <StyleToolbar type="other_deduction_type" id={dt.id} />
+              </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <input
                   className="cell-input"

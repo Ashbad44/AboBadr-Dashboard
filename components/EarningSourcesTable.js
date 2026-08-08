@@ -2,6 +2,9 @@
 
 import { fmtMoney, toNumber } from '../lib/utils';
 import { useLabels } from '../lib/LabelsContext';
+import StyledLabel from './StyledLabel';
+import StyleToolbar from './StyleToolbar';
+import { useTextStyles, styleToCss } from '../lib/TextStylesContext';
 
 export default function EarningSourcesTable({
   sources,
@@ -12,13 +15,14 @@ export default function EarningSourcesTable({
   onRemoveSource,
 }) {
   const { t } = useLabels();
+  const { getStyle } = useTextStyles();
   const total = sources.reduce((sum, s) => sum + toNumber((sourceData[s.id] || {}).amount), 0);
 
   return (
     <div className="panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--teal-500)' }}>💼</div>
-        <h3 className="panel-title">{t('sources_panel_title')}</h3>
+        <StyledLabel type="label" id="sources_panel_title" text={t('sources_panel_title')} as="h3" className="panel-title" />
       </div>
       <table className="grid-table">
         <thead>
@@ -34,11 +38,15 @@ export default function EarningSourcesTable({
             return (
               <tr key={s.id}>
                 <td>
-                  <input
-                    className="branch-name-input"
-                    value={s.name}
-                    onChange={(e) => onRenameSource(s.id, e.target.value)}
-                  />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <input
+                      className="branch-name-input"
+                      value={s.name}
+                      onChange={(e) => onRenameSource(s.id, e.target.value)}
+                      style={styleToCss(getStyle('earning_source', s.id))}
+                    />
+                    <StyleToolbar type="earning_source" id={s.id} />
+                  </div>
                 </td>
                 <td className="right">
                   <input

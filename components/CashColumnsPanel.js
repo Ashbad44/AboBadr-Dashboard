@@ -3,6 +3,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { fmtMoney } from '../lib/utils';
 import { useLabels } from '../lib/LabelsContext';
+import StyledLabel from './StyledLabel';
+import StyleToolbar from './StyleToolbar';
+import { useTextStyles, styleToCss } from '../lib/TextStylesContext';
 
 // Fetches one source's JSON (shape: { columns: [{ name, total }, ...] })
 async function fetchColumns(source) {
@@ -15,6 +18,7 @@ async function fetchColumns(source) {
 
 export default function CashColumnsPanel({ sources }) {
   const { t } = useLabels();
+  const { getStyle } = useTextStyles();
   // { [sourceId]: { status: 'loading'|'ok'|'error', columns: [] } }
   const [results, setResults] = useState({});
 
@@ -53,7 +57,7 @@ export default function CashColumnsPanel({ sources }) {
           <div className="panel" key={s.id}>
             <div className="panel-header">
               <div className="panel-icon" style={{ background: 'var(--green-600)' }}>💵</div>
-              <h3 className="panel-title">{t('cash_panel_title')}</h3>
+              <StyledLabel type="label" id="cash_panel_title" text={t('cash_panel_title')} as="h3" className="panel-title" />
             </div>
             <table className="grid-table">
               <thead>
@@ -65,7 +69,12 @@ export default function CashColumnsPanel({ sources }) {
               <tbody>
                 {r?.status === 'ok' && r.columns.map((c) => (
                   <tr key={c.name}>
-                    <td>{c.name}</td>
+                    <td>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                        <span style={styleToCss(getStyle('cash_column', c.name))}>{c.name}</span>
+                        <StyleToolbar type="cash_column" id={c.name} />
+                      </div>
+                    </td>
                     <td className="right">{fmtMoney(c.total)}</td>
                   </tr>
                 ))}

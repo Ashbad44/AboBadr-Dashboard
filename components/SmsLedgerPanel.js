@@ -3,6 +3,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { fmtMoney } from '../lib/utils';
 import { useLabels } from '../lib/LabelsContext';
+import StyledLabel from './StyledLabel';
+import StyleToolbar from './StyleToolbar';
+import { useTextStyles, styleToCss } from '../lib/TextStylesContext';
 
 // Fetches one source's JSON and sums the "amount" field across all rows.
 async function fetchSourceTotal(source) {
@@ -17,6 +20,7 @@ async function fetchSourceTotal(source) {
 
 export default function SmsLedgerPanel({ sources, onRenameSource }) {
   const { t } = useLabels();
+  const { getStyle } = useTextStyles();
   // { [sourceId]: { status: 'loading'|'ok'|'error', total, count } }
   const [results, setResults] = useState({});
 
@@ -51,7 +55,7 @@ export default function SmsLedgerPanel({ sources, onRenameSource }) {
     <div className="panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--blue-500)' }}>📱</div>
-        <h3 className="panel-title">{t('sms_panel_title')}</h3>
+        <StyledLabel type="label" id="sms_panel_title" text={t('sms_panel_title')} as="h3" className="panel-title" />
       </div>
       <table className="grid-table">
         <thead>
@@ -67,11 +71,15 @@ export default function SmsLedgerPanel({ sources, onRenameSource }) {
             return (
               <tr key={s.id}>
                 <td>
-                  <input
-                    className="branch-name-input"
-                    value={s.name}
-                    onChange={(e) => onRenameSource(s.id, e.target.value)}
-                  />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <input
+                      className="branch-name-input"
+                      value={s.name}
+                      onChange={(e) => onRenameSource(s.id, e.target.value)}
+                      style={styleToCss(getStyle('sms_source', s.id))}
+                    />
+                    <StyleToolbar type="sms_source" id={s.id} />
+                  </div>
                 </td>
                 <td className="right" dir="ltr">
                   {r?.status === 'ok' ? r.count : r?.status === 'loading' ? '…' : '-'}

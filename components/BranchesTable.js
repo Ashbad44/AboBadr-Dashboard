@@ -2,6 +2,9 @@
 
 import { fmtMoney, toNumber } from '../lib/utils';
 import { useLabels } from '../lib/LabelsContext';
+import StyledLabel from './StyledLabel';
+import StyleToolbar from './StyleToolbar';
+import { useTextStyles, styleToCss } from '../lib/TextStylesContext';
 
 export default function BranchesTable({
   branches,
@@ -12,6 +15,7 @@ export default function BranchesTable({
   onRemoveBranch,
 }) {
   const { t } = useLabels();
+  const { getStyle } = useTextStyles();
 
   const totals = branches.reduce(
     (acc, b) => {
@@ -28,7 +32,7 @@ export default function BranchesTable({
     <div className="panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--teal-600)' }}>🏦</div>
-        <h3 className="panel-title">{t('branches_panel_title')}</h3>
+        <StyledLabel type="label" id="branches_panel_title" text={t('branches_panel_title')} as="h3" className="panel-title" />
       </div>
       <table className="grid-table">
         <thead>
@@ -47,11 +51,15 @@ export default function BranchesTable({
             return (
               <tr key={b.id}>
                 <td>
-                  <input
-                    className="branch-name-input"
-                    value={b.name}
-                    onChange={(e) => onRenameBranch(b.id, e.target.value)}
-                  />
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <input
+                      className="branch-name-input"
+                      value={b.name}
+                      onChange={(e) => onRenameBranch(b.id, e.target.value)}
+                      style={styleToCss(getStyle('branch', b.id))}
+                    />
+                    <StyleToolbar type="branch" id={b.id} />
+                  </div>
                 </td>
                 <td className="right">
                   <input
