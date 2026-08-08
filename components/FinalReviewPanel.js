@@ -19,6 +19,7 @@ export default function FinalReviewPanel({
 }) {
   const { t } = useLabels();
   const { getStyle } = useTextStyles();
+  const ls = (key) => styleToCss(getStyle('label', key));
 
   return (
     <div className="panel panel-large">
@@ -28,11 +29,11 @@ export default function FinalReviewPanel({
       </div>
       <div className="kv-list">
         <div className="kv-row">
-          <span className="kv-label">{t('review_from_upper_table')}</span>
+          <span className="kv-label" style={ls('review_from_upper_table')}>{t('review_from_upper_table')}</span>
           <span>{fmtMoney(totals.incomeBeforeDeductions)}</span>
         </div>
         <div className="kv-row">
-          <span className="kv-label">{t('review_electricity_water')}</span>
+          <span className="kv-label" style={ls('review_electricity_water')}>{t('review_electricity_water')}</span>
           <input
             className="cell-input"
             type="number"
@@ -43,7 +44,7 @@ export default function FinalReviewPanel({
           />
         </div>
         <div className="kv-row">
-          <span className="kv-label">{t('review_salaries')}</span>
+          <span className="kv-label" style={ls('review_salaries')}>{t('review_salaries')}</span>
           <input
             className="cell-input"
             type="number"
@@ -83,11 +84,11 @@ export default function FinalReviewPanel({
           );
         })}
       </div>
-      <button className="add-row-btn" onClick={onAddOtherDeductionType}>
+      <button className="add-row-btn" onClick={onAddOtherDeductionType} style={ls('other_deductions_add_btn')}>
         {t('other_deductions_add_btn')}
       </button>
       <div className="final-banner">
-        <span>{t('review_final_banner')}</span>
+        <span style={ls('review_final_banner')}>{t('review_final_banner')}</span>
         <span>{fmtMoney(totals.finalMonthlyReview)}</span>
       </div>
     </div>

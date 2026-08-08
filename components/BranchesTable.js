@@ -16,6 +16,7 @@ export default function BranchesTable({
 }) {
   const { t } = useLabels();
   const { getStyle } = useTextStyles();
+  const ls = (key) => styleToCss(getStyle('label', key));
 
   const totals = branches.reduce(
     (acc, b) => {
@@ -37,10 +38,10 @@ export default function BranchesTable({
       <table className="grid-table">
         <thead>
           <tr>
-            <th>{t('branches_col_branch')}</th>
-            <th className="right">{t('branches_col_income')}</th>
-            <th className="right">{t('branches_col_expenses')}</th>
-            <th className="right">{t('branches_col_net')}</th>
+            <th style={ls('branches_col_branch')}>{t('branches_col_branch')}</th>
+            <th className="right" style={ls('branches_col_income')}>{t('branches_col_income')}</th>
+            <th className="right" style={ls('branches_col_expenses')}>{t('branches_col_expenses')}</th>
+            <th className="right" style={ls('branches_col_net')}>{t('branches_col_net')}</th>
             <th></th>
           </tr>
         </thead>
@@ -89,7 +90,7 @@ export default function BranchesTable({
             );
           })}
           <tr className="total-row">
-            <td>{t('branches_total_row')}</td>
+            <td style={ls('branches_total_row')}>{t('branches_total_row')}</td>
             <td className="right">{fmtMoney(totals.income)}</td>
             <td className="right">{fmtMoney(totals.expenses)}</td>
             <td className="right">{fmtMoney(totalNet)}</td>
@@ -97,7 +98,7 @@ export default function BranchesTable({
           </tr>
         </tbody>
       </table>
-      <button className="add-row-btn" onClick={onAddBranch}>{t('branches_add_btn')}</button>
+      <button className="add-row-btn" onClick={onAddBranch} style={ls('branches_add_btn')}>{t('branches_add_btn')}</button>
     </div>
   );
 }

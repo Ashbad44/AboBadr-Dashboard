@@ -21,6 +21,7 @@ async function fetchSourceTotal(source) {
 export default function SmsLedgerPanel({ sources, onRenameSource }) {
   const { t } = useLabels();
   const { getStyle } = useTextStyles();
+  const ls = (key) => styleToCss(getStyle('label', key));
   // { [sourceId]: { status: 'loading'|'ok'|'error', total, count } }
   const [results, setResults] = useState({});
 
@@ -60,9 +61,9 @@ export default function SmsLedgerPanel({ sources, onRenameSource }) {
       <table className="grid-table">
         <thead>
           <tr>
-            <th>{t('sms_col_bank')}</th>
-            <th className="right">{t('sms_col_count')}</th>
-            <th className="right">{t('sms_col_total')}</th>
+            <th style={ls('sms_col_bank')}>{t('sms_col_bank')}</th>
+            <th className="right" style={ls('sms_col_count')}>{t('sms_col_count')}</th>
+            <th className="right" style={ls('sms_col_total')}>{t('sms_col_total')}</th>
           </tr>
         </thead>
         <tbody>
@@ -94,13 +95,13 @@ export default function SmsLedgerPanel({ sources, onRenameSource }) {
             );
           })}
           <tr className="total-row">
-            <td>{t('sms_col_total')}</td>
+            <td style={ls('sms_col_total')}>{t('sms_col_total')}</td>
             <td></td>
             <td className="right">{fmtMoney(grandTotal)}</td>
           </tr>
         </tbody>
       </table>
-      <button className="add-row-btn" onClick={refreshAll}>{t('sms_refresh_btn')}</button>
+      <button className="add-row-btn" onClick={refreshAll} style={ls('sms_refresh_btn')}>{t('sms_refresh_btn')}</button>
     </div>
   );
 }

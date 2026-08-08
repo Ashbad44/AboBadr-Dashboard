@@ -16,6 +16,7 @@ export default function EarningSourcesTable({
 }) {
   const { t } = useLabels();
   const { getStyle } = useTextStyles();
+  const ls = (key) => styleToCss(getStyle('label', key));
   const total = sources.reduce((sum, s) => sum + toNumber((sourceData[s.id] || {}).amount), 0);
 
   return (
@@ -27,8 +28,8 @@ export default function EarningSourcesTable({
       <table className="grid-table">
         <thead>
           <tr>
-            <th>{t('sources_col_source')}</th>
-            <th className="right">{t('sources_col_amount')}</th>
+            <th style={ls('sources_col_source')}>{t('sources_col_source')}</th>
+            <th className="right" style={ls('sources_col_amount')}>{t('sources_col_amount')}</th>
             <th></th>
           </tr>
         </thead>
@@ -65,13 +66,13 @@ export default function EarningSourcesTable({
             );
           })}
           <tr className="total-row">
-            <td>{t('sources_total_row')}</td>
+            <td style={ls('sources_total_row')}>{t('sources_total_row')}</td>
             <td className="right">{fmtMoney(total)}</td>
             <td></td>
           </tr>
         </tbody>
       </table>
-      <button className="add-row-btn" onClick={onAddSource}>{t('sources_add_btn')}</button>
+      <button className="add-row-btn" onClick={onAddSource} style={ls('sources_add_btn')}>{t('sources_add_btn')}</button>
     </div>
   );
 }

@@ -19,6 +19,7 @@ async function fetchColumns(source) {
 export default function CashColumnsPanel({ sources }) {
   const { t } = useLabels();
   const { getStyle } = useTextStyles();
+  const ls = (key) => styleToCss(getStyle('label', key));
   // { [sourceId]: { status: 'loading'|'ok'|'error', columns: [] } }
   const [results, setResults] = useState({});
 
@@ -62,8 +63,8 @@ export default function CashColumnsPanel({ sources }) {
             <table className="grid-table">
               <thead>
                 <tr>
-                  <th>{t('cash_col_name')}</th>
-                  <th className="right">{t('cash_col_total')}</th>
+                  <th style={ls('cash_col_name')}>{t('cash_col_name')}</th>
+                  <th className="right" style={ls('cash_col_total')}>{t('cash_col_total')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -86,13 +87,13 @@ export default function CashColumnsPanel({ sources }) {
                 )}
                 {r?.status === 'ok' && (
                   <tr className="total-row">
-                    <td>{t('cash_total_row')}</td>
+                    <td style={ls('cash_total_row')}>{t('cash_total_row')}</td>
                     <td className="right">{fmtMoney(grandTotal)}</td>
                   </tr>
                 )}
               </tbody>
             </table>
-            <button className="add-row-btn" onClick={refreshAll}>{t('cash_refresh_btn')}</button>
+            <button className="add-row-btn" onClick={refreshAll} style={ls('cash_refresh_btn')}>{t('cash_refresh_btn')}</button>
           </div>
         );
       })}

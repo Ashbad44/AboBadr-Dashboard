@@ -16,6 +16,7 @@ import CashColumnsPanel from '../../components/CashColumnsPanel';
 import Tabs from '../../components/Tabs';
 import PrintButton from '../../components/PrintButton';
 import { useLabels } from '../../lib/LabelsContext';
+import { useTextStyles, styleToCss } from '../../lib/TextStylesContext';
 
 const EMPTY_DEDUCTIONS = {
   other_deduction: 0,
@@ -27,6 +28,8 @@ const EMPTY_DEDUCTIONS = {
 export default function DashboardPage() {
   const router = useRouter();
   const { t, labels } = useLabels();
+  const { getStyle } = useTextStyles();
+  const ls = (key) => styleToCss(getStyle('label', key));
   const [checkingSession, setCheckingSession] = useState(true);
 
   const [month, setMonth] = useState(currentMonthValue());
@@ -321,8 +324,8 @@ export default function DashboardPage() {
       <div className="main">
         <div className="top-row">
           <div>
-            <h1 className="page-title">{t('app_title')}</h1>
-            <p className="page-subtitle">
+            <h1 className="page-title" style={ls('app_title')}>{t('app_title')}</h1>
+            <p className="page-subtitle" style={ls('app_subtitle')}>
               {t('app_subtitle')}{saving ? ` ${t('saving_note')}` : ''}
             </p>
           </div>
