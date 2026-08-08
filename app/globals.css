@@ -633,6 +633,11 @@ table.grid-table input.cell-input {
     padding: 18px;
     box-shadow: none !important;
     break-inside: avoid;
+    min-width: 0;
+  }
+
+  .stat-card > div:last-child {
+    min-width: 0;
   }
 
   .stat-card.highlight-card {
@@ -651,7 +656,7 @@ table.grid-table input.cell-input {
   }
 
   .stat-value {
-    font-size: 24px;
+    font-size: 21px;
   }
 
   .stat-note {
@@ -659,7 +664,7 @@ table.grid-table input.cell-input {
   }
 
   .stat-card.highlight-card .stat-value {
-    font-size: 27px;
+    font-size: 23px;
   }
 
   /* Panels — full width, close to on-screen "panel-large" scale */
