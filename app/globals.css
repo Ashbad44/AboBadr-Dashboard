@@ -393,6 +393,14 @@ table.grid-table tbody tr.total-row td {
   background: #eef6f4;
 }
 
+table.grid-table tbody tr.bank-subtotal-row td {
+  font-weight: 700;
+  background: #e3edfb;
+  color: var(--blue-500);
+  border-top: 2px solid var(--blue-500);
+  border-bottom: 2px solid var(--blue-500);
+}
+
 table.grid-table input.cell-input {
   width: 100px;
   padding: 7px 9px;
@@ -851,6 +859,15 @@ table.grid-table input.cell-input {
     background: #dcece8 !important;
     border-top: 2px solid var(--teal-600);
     color: var(--teal-900);
+  }
+
+  table.grid-table tbody tr.bank-subtotal-row td {
+    font-size: 20px;
+    padding: 13px 15px;
+    background: #dbe7f9 !important;
+    border-top: 2px solid var(--blue-500);
+    border-bottom: 2px solid var(--blue-500);
+    color: var(--blue-500);
   }
 
   .branch-name-input,

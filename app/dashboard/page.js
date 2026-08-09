@@ -227,6 +227,11 @@ export default function DashboardPage() {
     setSources((prev) => prev.filter((s) => s.id !== sourceId));
   }
 
+  async function handleToggleSourceBankGroup(sourceId, value) {
+    setSources((prev) => prev.map((s) => (s.id === sourceId ? { ...s, include_in_bank_total: value } : s)));
+    await supabase.from('earning_sources').update({ include_in_bank_total: value }).eq('id', sourceId);
+  }
+
   async function handleRenameSmsSource(sourceId, name) {
     setSmsSources((prev) => prev.map((s) => (s.id === sourceId ? { ...s, name } : s)));
     scheduleSave(async () => {
@@ -380,6 +385,7 @@ export default function DashboardPage() {
                   onRenameSource={handleRenameSource}
                   onAddSource={handleAddSource}
                   onRemoveSource={handleRemoveSource}
+                  onToggleBankGroup={handleToggleSourceBankGroup}
                 />
                 <PrintButton />
               </div>

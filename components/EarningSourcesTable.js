@@ -13,11 +13,61 @@ export default function EarningSourcesTable({
   onRenameSource,
   onAddSource,
   onRemoveSource,
+  onToggleBankGroup,
 }) {
   const { t } = useLabels();
   const { getStyle } = useTextStyles();
   const ls = (key) => styleToCss(getStyle('label', key));
+
   const total = sources.reduce((sum, s) => sum + toNumber((sourceData[s.id] || {}).amount), 0);
+
+  const bankSources = sources.filter((s) => s.include_in_bank_total);
+  const otherSources = sources.filter((s) => !s.include_in_bank_total);
+  const bankSubtotal = bankSources.reduce((sum, s) => sum + toNumber((sourceData[s.id] || {}).amount), 0);
+
+  function renderRow(s) {
+    const row = sourceData[s.id] || { amount: 0 };
+    return (
+      <tr key={s.id}>
+        <td>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <button
+              type="button"
+              onClick={() => onToggleBankGroup(s.id, !s.include_in_bank_total)}
+              title="ضمن إجمالي التحويلات البنكية"
+              style={{
+                border: 'none', background: 'transparent', cursor: 'pointer',
+                fontSize: 14, opacity: s.include_in_bank_total ? 1 : 0.25,
+              }}
+            >
+              🏦
+            </button>
+            <input
+              className="branch-name-input"
+              value={s.name}
+              onChange={(e) => onRenameSource(s.id, e.target.value)}
+              style={styleToCss(getStyle('earning_source', s.id))}
+            />
+            <StyleToolbar type="earning_source" id={s.id} />
+          </div>
+        </td>
+        <td className="right">
+          <input
+            className="cell-input"
+            type="text"
+            inputMode="decimal"
+            dir="ltr"
+            lang="en"
+            value={row.amount}
+            onChange={(e) => onChangeAmount(s.id, e.target.value)}
+          />
+        </td>
+        <td>
+          <button className="remove-btn" onClick={() => onRemoveSource(s.id)}>✕</button>
+        </td>
+      </tr>
+    );
+  }
 
   return (
     <div className="panel">
@@ -34,38 +84,18 @@ export default function EarningSourcesTable({
           </tr>
         </thead>
         <tbody>
-          {sources.map((s) => {
-            const row = sourceData[s.id] || { amount: 0 };
-            return (
-              <tr key={s.id}>
-                <td>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                    <input
-                      className="branch-name-input"
-                      value={s.name}
-                      onChange={(e) => onRenameSource(s.id, e.target.value)}
-                      style={styleToCss(getStyle('earning_source', s.id))}
-                    />
-                    <StyleToolbar type="earning_source" id={s.id} />
-                  </div>
-                </td>
-                <td className="right">
-                  <input
-                    className="cell-input"
-                    type="text"
-                    inputMode="decimal"
-                    dir="ltr"
-                    lang="en"
-                    value={row.amount}
-                    onChange={(e) => onChangeAmount(s.id, e.target.value)}
-                  />
-                </td>
-                <td>
-                  <button className="remove-btn" onClick={() => onRemoveSource(s.id)}>✕</button>
-                </td>
-              </tr>
-            );
-          })}
+          {bankSources.map(renderRow)}
+
+          {bankSources.length > 0 && (
+            <tr className="total-row bank-subtotal-row">
+              <td style={ls('sources_bank_subtotal_row')}>{t('sources_bank_subtotal_row')}</td>
+              <td className="right">{fmtMoney(bankSubtotal)}</td>
+              <td></td>
+            </tr>
+          )}
+
+          {otherSources.map(renderRow)}
+
           <tr className="total-row">
             <td style={ls('sources_total_row')}>{t('sources_total_row')}</td>
             <td className="right">{fmtMoney(total)}</td>
