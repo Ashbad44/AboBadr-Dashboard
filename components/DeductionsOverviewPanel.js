@@ -25,7 +25,8 @@ export default function DeductionsOverviewPanel({ totals, deductions, onChangeDe
           <span className="kv-label" style={ls('deductions_other')}>{t('deductions_other')}</span>
           <input
             className="cell-input"
-            type="number"
+            type="text"
+                    inputMode="decimal"
             dir="ltr"
             lang="en"
             value={deductions.other_deduction}

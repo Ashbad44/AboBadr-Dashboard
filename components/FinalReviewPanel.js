@@ -36,7 +36,8 @@ export default function FinalReviewPanel({
           <span className="kv-label" style={ls('review_electricity_water')}>{t('review_electricity_water')}</span>
           <input
             className="cell-input"
-            type="number"
+            type="text"
+                    inputMode="decimal"
             dir="ltr"
             lang="en"
             value={deductions.electricity_water}
@@ -47,7 +48,8 @@ export default function FinalReviewPanel({
           <span className="kv-label" style={ls('review_salaries')}>{t('review_salaries')}</span>
           <input
             className="cell-input"
-            type="number"
+            type="text"
+                    inputMode="decimal"
             dir="ltr"
             lang="en"
             value={deductions.salaries}
@@ -72,7 +74,8 @@ export default function FinalReviewPanel({
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <input
                   className="cell-input"
-                  type="number"
+                  type="text"
+                    inputMode="decimal"
                   dir="ltr"
                   lang="en"
                   value={row.amount}

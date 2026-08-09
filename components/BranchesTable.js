@@ -65,7 +65,8 @@ export default function BranchesTable({
                 <td className="right">
                   <input
                     className="cell-input"
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     dir="ltr"
                     lang="en"
                     value={row.income}
@@ -75,7 +76,8 @@ export default function BranchesTable({
                 <td className="right">
                   <input
                     className="cell-input"
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     dir="ltr"
                     lang="en"
                     value={row.expenses}

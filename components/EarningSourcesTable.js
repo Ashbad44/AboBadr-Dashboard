@@ -52,7 +52,8 @@ export default function EarningSourcesTable({
                 <td className="right">
                   <input
                     className="cell-input"
-                    type="number"
+                    type="text"
+                    inputMode="decimal"
                     dir="ltr"
                     lang="en"
                     value={row.amount}
