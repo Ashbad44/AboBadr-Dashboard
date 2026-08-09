@@ -369,14 +369,6 @@ export default function DashboardPage() {
 
             {activeTab === 'reconciliation' && (
               <div className="tab-page">
-                <EarningSourcesTable
-                  sources={sources}
-                  sourceData={sourceData}
-                  onChangeAmount={handleChangeAmount}
-                  onRenameSource={handleRenameSource}
-                  onAddSource={handleAddSource}
-                  onRemoveSource={handleRemoveSource}
-                />
                 <FinalReviewPanel
                   totals={totals}
                   deductions={deductions}
@@ -387,6 +379,14 @@ export default function DashboardPage() {
                   onRenameOtherDeductionType={handleRenameOtherDeductionType}
                   onAddOtherDeductionType={handleAddOtherDeductionType}
                   onRemoveOtherDeductionType={handleRemoveOtherDeductionType}
+                />
+                <EarningSourcesTable
+                  sources={sources}
+                  sourceData={sourceData}
+                  onChangeAmount={handleChangeAmount}
+                  onRenameSource={handleRenameSource}
+                  onAddSource={handleAddSource}
+                  onRemoveSource={handleRemoveSource}
                 />
                 <PrintButton />
               </div>

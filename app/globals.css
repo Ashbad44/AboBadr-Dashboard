@@ -830,7 +830,7 @@ table.grid-table input.cell-input {
 
   .kv-row.highlight,
   .panel-large .kv-row.highlight {
-    font-size: 19px;
+    font-size: 24px;
     padding: 14px 15px;
     background: #dcece8 !important;
     border: 1.5px solid var(--teal-600);
@@ -839,14 +839,14 @@ table.grid-table input.cell-input {
 
   .final-banner,
   .panel-large .final-banner {
-    font-size: 19px;
+    font-size: 24px;
     padding: 16px 18px;
     border: 1.5px solid var(--teal-600);
   }
 
   table.grid-table tbody tr.total-row td,
   .panel-large table.grid-table tbody tr.total-row td {
-    font-size: 19px;
+    font-size: 24px;
     padding: 14px 15px;
     background: #dcece8 !important;
     border-top: 2px solid var(--teal-600);
