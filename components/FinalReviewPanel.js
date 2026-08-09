@@ -10,8 +10,7 @@ export default function FinalReviewPanel({
   totals,
   deductions,
   onChangeDeduction,
-  otherDeductionTypes,
-  otherDeductionData,
+  otherDeductions,
   onChangeOtherDeductionAmount,
   onRenameOtherDeductionType,
   onAddOtherDeductionType,
@@ -57,35 +56,32 @@ export default function FinalReviewPanel({
           />
         </div>
 
-        {/* Editable, addable list of "other payment" line items */}
-        {otherDeductionTypes.map((dt) => {
-          const row = otherDeductionData[dt.id] || { amount: 0 };
-          return (
-            <div className="kv-row" key={dt.id}>
+        {/* Editable, addable list of "other payment" line items — scoped to this month only */}
+        {otherDeductions.map((d) => (
+            <div className="kv-row" key={d.id}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                 <input
                   className="branch-name-input"
-                  style={{ maxWidth: 180, ...styleToCss(getStyle('other_deduction_type', dt.id)) }}
-                  value={dt.name}
-                  onChange={(e) => onRenameOtherDeductionType(dt.id, e.target.value)}
+                  style={{ maxWidth: 180, ...styleToCss(getStyle('other_deduction_type', d.id)) }}
+                  value={d.name}
+                  onChange={(e) => onRenameOtherDeductionType(d.id, e.target.value)}
                 />
-                <StyleToolbar type="other_deduction_type" id={dt.id} />
+                <StyleToolbar type="other_deduction_type" id={d.id} />
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                 <input
                   className="cell-input"
                   type="text"
-                    inputMode="decimal"
+                  inputMode="decimal"
                   dir="ltr"
                   lang="en"
-                  value={row.amount}
-                  onChange={(e) => onChangeOtherDeductionAmount(dt.id, e.target.value)}
+                  value={d.amount}
+                  onChange={(e) => onChangeOtherDeductionAmount(d.id, e.target.value)}
                 />
-                <button className="remove-btn" onClick={() => onRemoveOtherDeductionType(dt.id)}>✕</button>
+                <button className="remove-btn" onClick={() => onRemoveOtherDeductionType(d.id)}>✕</button>
               </div>
             </div>
-          );
-        })}
+        ))}
       </div>
       <button className="add-row-btn" onClick={onAddOtherDeductionType} style={ls('other_deductions_add_btn')}>
         {t('other_deductions_add_btn')}
