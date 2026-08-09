@@ -23,6 +23,8 @@ const EMPTY_DEDUCTIONS = {
   electricity_water: 0,
   salaries: 0,
   other_payment: 0,
+  salary_handover: 0,
+  government_fees: 0,
 };
 
 export default function DashboardPage() {
@@ -119,6 +121,8 @@ export default function DashboardPage() {
       electricity_water: ded.electricity_water,
       salaries: ded.salaries,
       other_payment: ded.other_payment,
+      salary_handover: ded.salary_handover,
+      government_fees: ded.government_fees,
     } : EMPTY_DEDUCTIONS);
 
     const { data: odd } = await supabase
@@ -240,6 +244,8 @@ export default function DashboardPage() {
           electricity_water: toNumber(next.electricity_water),
           salaries: toNumber(next.salaries),
           other_payment: toNumber(next.other_payment),
+          salary_handover: toNumber(next.salary_handover),
+          government_fees: toNumber(next.government_fees),
         }, { onConflict: 'month' });
       });
       return next;
@@ -291,6 +297,8 @@ export default function DashboardPage() {
     incomeBeforeDeductions +
     toNumber(deductions.electricity_water) +
     toNumber(deductions.salaries) +
+    toNumber(deductions.salary_handover) +
+    toNumber(deductions.government_fees) +
     otherDeductionsTotal;
 
   const totals = {

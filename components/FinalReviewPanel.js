@@ -55,6 +55,30 @@ export default function FinalReviewPanel({
             onChange={(e) => onChangeDeduction('salaries', e.target.value)}
           />
         </div>
+        <div className="kv-row">
+          <span className="kv-label" style={ls('review_salary_handover')}>{t('review_salary_handover')}</span>
+          <input
+            className="cell-input"
+            type="text"
+            inputMode="decimal"
+            dir="ltr"
+            lang="en"
+            value={deductions.salary_handover}
+            onChange={(e) => onChangeDeduction('salary_handover', e.target.value)}
+          />
+        </div>
+        <div className="kv-row">
+          <span className="kv-label" style={ls('review_government_fees')}>{t('review_government_fees')}</span>
+          <input
+            className="cell-input"
+            type="text"
+            inputMode="decimal"
+            dir="ltr"
+            lang="en"
+            value={deductions.government_fees}
+            onChange={(e) => onChangeDeduction('government_fees', e.target.value)}
+          />
+        </div>
 
         {/* Editable, addable list of "other payment" line items — scoped to this month only */}
         {otherDeductions.map((d) => (
