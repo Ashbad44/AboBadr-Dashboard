@@ -711,7 +711,11 @@ table.grid-table input.cell-input {
   }
 
   .print-month-label {
+    display: inline-block;
     font-size: 16px;
+    font-weight: 700;
+    color: var(--teal-900);
+    margin-inline-end: 8px;
   }
 
   .year-pill {
