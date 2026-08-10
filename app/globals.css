@@ -248,6 +248,15 @@ input, select {
   padding: 8px 16px;
 }
 
+/* First tab's Branches box — every bit of text bold, including input boxes */
+.branches-panel table.grid-table,
+.branches-panel .branch-name-input,
+.branches-panel input.cell-input,
+.branches-panel td,
+.branches-panel th {
+  font-weight: 700;
+}
+
 /* ---------- Cards ---------- */
 .cards-row {
   display: grid;
@@ -819,29 +828,30 @@ table.grid-table input.cell-input {
 
   table.grid-table,
   .panel-large table.grid-table {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 
   table.grid-table thead th,
   .panel-large table.grid-table thead th {
     padding: 11px 15px;
-    font-size: 14px;
+    font-size: 14px !important;
   }
 
   table.grid-table tbody td,
   .panel-large table.grid-table tbody td {
     padding: 11px 15px;
+    font-size: 16px !important;
   }
 
   .kv-row,
   .panel-large .kv-row {
     padding: 13px 15px;
-    font-size: 16px;
+    font-size: 16px !important;
   }
 
   .kv-row.highlight,
   .panel-large .kv-row.highlight {
-    font-size: 24px;
+    font-size: 24px !important;
     padding: 14px 15px;
     background: #dcece8 !important;
     border: 1.5px solid var(--teal-600);
@@ -850,14 +860,14 @@ table.grid-table input.cell-input {
 
   .final-banner,
   .panel-large .final-banner {
-    font-size: 24px;
+    font-size: 24px !important;
     padding: 16px 18px;
     border: 1.5px solid var(--teal-600);
   }
 
   table.grid-table tbody tr.total-row td,
   .panel-large table.grid-table tbody tr.total-row td {
-    font-size: 24px;
+    font-size: 24px !important;
     padding: 14px 15px;
     background: #dcece8 !important;
     border-top: 2px solid var(--teal-600);
@@ -865,7 +875,7 @@ table.grid-table input.cell-input {
   }
 
   table.grid-table tbody tr.bank-subtotal-row td {
-    font-size: 20px;
+    font-size: 20px !important;
     padding: 13px 15px;
     background: #dbe7f9 !important;
     border-top: 2px solid var(--blue-500);
@@ -875,7 +885,7 @@ table.grid-table input.cell-input {
 
   .branch-name-input,
   .panel-large .branch-name-input {
-    font-size: 16px;
+    font-size: 16px !important;
   }
 
   /* Turn editable inputs into plain-looking values for print */
@@ -884,7 +894,7 @@ table.grid-table input.cell-input {
     border: none !important;
     background: transparent !important;
     padding: 0 !important;
-    font-size: inherit;
+    font-size: inherit !important;
   }
 
   input.cell-input {

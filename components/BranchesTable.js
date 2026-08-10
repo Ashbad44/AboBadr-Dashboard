@@ -30,7 +30,7 @@ export default function BranchesTable({
   const totalNet = totals.income - totals.expenses;
 
   return (
-    <div className="panel">
+    <div className="panel branches-panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--teal-600)' }}>🏦</div>
         <StyledLabel type="label" id="branches_panel_title" text={t('branches_panel_title')} as="h3" className="panel-title" />
