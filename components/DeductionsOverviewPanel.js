@@ -11,7 +11,7 @@ export default function DeductionsOverviewPanel({ totals, deductions, onChangeDe
   const ls = (key) => styleToCss(getStyle('label', key));
 
   return (
-    <div className="panel panel-large">
+    <div className="panel panel-large deductions-panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--orange-500)' }}>📋</div>
         <StyledLabel type="label" id="deductions_panel_title" text={t('deductions_panel_title')} as="h3" className="panel-title" />

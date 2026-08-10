@@ -273,7 +273,11 @@ input, select {
 .review-panel .kv-row,
 .review-panel .kv-label,
 .review-panel .branch-name-input,
-.review-panel input.cell-input {
+.review-panel input.cell-input,
+.deductions-panel .kv-row,
+.deductions-panel .kv-label,
+.deductions-panel .branch-name-input,
+.deductions-panel input.cell-input {
   font-weight: 700;
 }
 
