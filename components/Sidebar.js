@@ -14,6 +14,8 @@ export default function Sidebar() {
 
   const LINKS = [
     { href: '/dashboard', label: t('nav_dashboard'), key: 'nav_dashboard', icon: '🏠' },
+    { href: '/reports', label: t('nav_annual_report'), key: 'nav_annual_report', icon: '📅' },
+    { href: '/branches-report', label: t('nav_branches_report'), key: 'nav_branches_report', icon: '🏢' },
     { href: '/settings', label: t('nav_settings'), key: 'nav_settings', icon: '⚙️' },
   ];
 
