@@ -65,7 +65,6 @@ export default function SummaryCards({ totals }) {
           <div>
             <p className="stat-title" style={ls(c.titleKey)}>{c.title}</p>
             <p className="stat-value">{fmtMoney(c.value)}</p>
-            <p className="stat-note" style={ls(c.noteKey)}>{c.note}</p>
           </div>
         </div>
       ))}
