@@ -70,7 +70,7 @@ export default function EarningSourcesTable({
   }
 
   return (
-    <div className="panel">
+    <div className="panel sources-panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--teal-500)' }}>💼</div>
         <StyledLabel type="label" id="sources_panel_title" text={t('sources_panel_title')} as="h3" className="panel-title" />

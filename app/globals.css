@@ -248,12 +248,32 @@ input, select {
   padding: 8px 16px;
 }
 
-/* First tab's Branches box — every bit of text bold, including input boxes */
+/* First tab's Branches box, and every box in tabs 2 & 3 —
+   all text bold, including input boxes */
 .branches-panel table.grid-table,
 .branches-panel .branch-name-input,
 .branches-panel input.cell-input,
 .branches-panel td,
-.branches-panel th {
+.branches-panel th,
+.sources-panel table.grid-table,
+.sources-panel .branch-name-input,
+.sources-panel input.cell-input,
+.sources-panel td,
+.sources-panel th,
+.sms-panel table.grid-table,
+.sms-panel .branch-name-input,
+.sms-panel input.cell-input,
+.sms-panel td,
+.sms-panel th,
+.cash-panel table.grid-table,
+.cash-panel .branch-name-input,
+.cash-panel input.cell-input,
+.cash-panel td,
+.cash-panel th,
+.review-panel .kv-row,
+.review-panel .kv-label,
+.review-panel .branch-name-input,
+.review-panel input.cell-input {
   font-weight: 700;
 }
 

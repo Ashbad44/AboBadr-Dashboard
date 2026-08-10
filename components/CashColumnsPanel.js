@@ -55,7 +55,7 @@ export default function CashColumnsPanel({ sources }) {
           : 0;
 
         return (
-          <div className="panel" key={s.id}>
+          <div className="panel cash-panel" key={s.id}>
             <div className="panel-header">
               <div className="panel-icon" style={{ background: 'var(--green-600)' }}>💵</div>
               <StyledLabel type="label" id="cash_panel_title" text={t('cash_panel_title')} as="h3" className="panel-title" />

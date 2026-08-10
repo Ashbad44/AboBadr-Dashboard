@@ -53,7 +53,7 @@ export default function SmsLedgerPanel({ sources, onRenameSource }) {
   );
 
   return (
-    <div className="panel">
+    <div className="panel sms-panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--blue-500)' }}>📱</div>
         <StyledLabel type="label" id="sms_panel_title" text={t('sms_panel_title')} as="h3" className="panel-title" />

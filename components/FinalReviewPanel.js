@@ -21,7 +21,7 @@ export default function FinalReviewPanel({
   const ls = (key) => styleToCss(getStyle('label', key));
 
   return (
-    <div className="panel panel-large">
+    <div className="panel panel-large review-panel">
       <div className="panel-header">
         <div className="panel-icon" style={{ background: 'var(--green-600)' }}>👁️</div>
         <StyledLabel type="label" id="review_panel_title" text={t('review_panel_title')} as="h3" className="panel-title" />
