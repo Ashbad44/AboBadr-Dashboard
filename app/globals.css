@@ -212,35 +212,35 @@ input, select {
 }
 
 .panel-large table.grid-table {
-  font-size: 17px;
+  font-size: 24px;
 }
 
 .panel-large table.grid-table thead th {
-  padding: 14px 17px;
-  font-size: 15px;
+  padding: 16px 18px;
+  font-size: 20px;
 }
 
 .panel-large table.grid-table tbody td {
-  padding: 14px 17px;
+  padding: 16px 18px;
 }
 
 .panel-large .kv-row {
-  padding: 15px 17px;
-  font-size: 17px;
+  padding: 17px 18px;
+  font-size: 24px;
 }
 
 .panel-large .branch-name-input {
-  font-size: 17px;
+  font-size: 24px;
 }
 
 .panel-large .cell-input {
-  font-size: 17px;
-  padding: 8px 10px;
+  font-size: 24px;
+  padding: 10px 12px;
 }
 
 .panel-large .final-banner {
-  font-size: 18px;
-  padding: 17px 19px;
+  font-size: 28px;
+  padding: 19px 21px;
 }
 
 .panel-large .add-row-btn {
@@ -369,14 +369,14 @@ input, select {
 table.grid-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 15px;
+  font-size: 24px;
 }
 
 table.grid-table thead th {
   background: var(--teal-900);
   color: #fff;
   text-align: left;
-  padding: 12px 14px;
+  padding: 14px 16px;
   font-weight: 600;
 }
 
@@ -384,17 +384,19 @@ table.grid-table thead th.right,
 table.grid-table td.right { text-align: right; }
 
 table.grid-table tbody td {
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-bottom: 1px solid var(--border);
 }
 
 table.grid-table tbody tr.total-row td {
   font-weight: 700;
+  font-size: 28px;
   background: #eef6f4;
 }
 
 table.grid-table tbody tr.bank-subtotal-row td {
   font-weight: 700;
+  font-size: 28px;
   background: #e3edfb;
   color: var(--blue-500);
   border-top: 2px solid var(--blue-500);
@@ -402,18 +404,18 @@ table.grid-table tbody tr.bank-subtotal-row td {
 }
 
 table.grid-table input.cell-input {
-  width: 100px;
-  padding: 7px 9px;
+  width: 130px;
+  padding: 9px 11px;
   border: 1px solid var(--border);
   border-radius: 6px;
   text-align: right;
-  font-size: 15px;
+  font-size: 24px;
 }
 
 .branch-name-input {
   border: none;
   background: transparent;
-  font-size: 15px;
+  font-size: 24px;
   width: 100%;
   padding: 2px 0;
 }
@@ -456,28 +458,29 @@ table.grid-table input.cell-input {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 14px;
+  padding: 16px 18px;
   border-bottom: 1px solid var(--border);
-  font-size: 15px;
+  font-size: 24px;
 }
 
 .kv-list .kv-row.highlight {
   background: #eef6f4;
   font-weight: 700;
+  font-size: 28px;
   border-radius: 8px;
 }
 
 .kv-row .kv-label { color: var(--text-dark); }
-.kv-row input.cell-input { width: 110px; }
+.kv-row input.cell-input { width: 140px; }
 
 .final-banner {
   background: #eef6f4;
   border-radius: 8px;
-  padding: 13px 16px;
+  padding: 17px 20px;
   display: flex;
   justify-content: space-between;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 28px;
   color: var(--teal-900);
   margin-top: 10px;
 }
