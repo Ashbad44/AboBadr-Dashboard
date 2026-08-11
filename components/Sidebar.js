@@ -13,11 +13,11 @@ export default function Sidebar() {
   const ls = (key) => styleToCss(getStyle('label', key));
 
   const LINKS = [
-    { href: '/summary', label: t('nav_executive_summary'), key: 'nav_executive_summary', icon: '⭐' },
     { href: '/dashboard', label: t('nav_dashboard'), key: 'nav_dashboard', icon: '🏠' },
     { href: '/reports', label: t('nav_annual_report'), key: 'nav_annual_report', icon: '📅' },
     { href: '/branches-report', label: t('nav_branches_report'), key: 'nav_branches_report', icon: '🏢' },
     { href: '/settings', label: t('nav_settings'), key: 'nav_settings', icon: '⚙️' },
+    { href: '/summary', label: t('nav_executive_summary'), key: 'nav_executive_summary', icon: '⭐' },
   ];
 
   async function handleSignOut() {
