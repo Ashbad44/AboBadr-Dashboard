@@ -8,8 +8,12 @@ import Sidebar from '../../components/Sidebar';
 import YearPicker from '../../components/YearPicker';
 import AnnualTrendChart from '../../components/AnnualTrendChart';
 import PrintButton from '../../components/PrintButton';
+import ExcelExportButton from '../../components/ExcelExportButton';
+import SkeletonCards from '../../components/SkeletonCards';
+import SkeletonPanel from '../../components/SkeletonPanel';
 import { useLabels } from '../../lib/LabelsContext';
 import { useTextStyles, styleToCss } from '../../lib/TextStylesContext';
+import { exportToExcel } from '../../lib/excelExport';
 
 export default function AnnualReportPage() {
   const router = useRouter();
@@ -88,6 +92,27 @@ export default function AnnualReportPage() {
     { key: 'annual_card_final_income', value: totals.finalIncome, color: 'var(--teal-900)', icon: '💰' },
   ];
 
+  function handleExport() {
+    exportToExcel(`التقرير-السنوي-${year}`, [
+      {
+        name: 'ملخص السنة',
+        rows: [
+          { البند: t('annual_card_total_income'), القيمة: totals.totalIncome },
+          { البند: t('annual_card_total_expenses'), القيمة: totals.totalExpenses },
+          { البند: t('annual_card_net_income'), القيمة: totals.netIncome },
+          { البند: t('annual_card_deduction'), القيمة: totals.totalDeduction },
+          { البند: t('annual_card_final_income'), القيمة: totals.finalIncome },
+        ],
+      },
+      {
+        name: 'شهري',
+        rows: monthlyRows.map((m) => ({
+          الشهر: m.month, الإيرادات: m.income, المصروفات: m.expenses, الصافي: m.net,
+        })),
+      },
+    ]);
+  }
+
   return (
     <div className="app-shell" style={{ zoom: `${textScale}%` }}>
       <Sidebar />
@@ -104,9 +129,12 @@ export default function AnnualReportPage() {
         </div>
 
         {loading ? (
-          <div className="loading-screen" style={{ minHeight: 200 }}>جارٍ التحميل…</div>
+          <>
+            <SkeletonCards count={5} />
+            <SkeletonPanel rows={6} />
+          </>
         ) : (
-          <div className="tab-page">
+          <div className="tab-page fade-in-transition" key={year}>
             <div className="cards-row">
               {cards.map((c, i) => (
                 <div className={`stat-card ${i === cards.length - 1 ? 'highlight-card' : ''}`} key={c.key}>
@@ -133,7 +161,10 @@ export default function AnnualReportPage() {
                 }}
               />
             </div>
-            <PrintButton />
+            <div className="action-buttons-row">
+              <PrintButton />
+              <ExcelExportButton onClick={handleExport} />
+            </div>
           </div>
         )}
       </div>

@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
-import { currentMonthValue, monthLabel, toNumber } from '../../lib/utils';
+import { currentMonthValue, toNumber } from '../../lib/utils';
 import Sidebar from '../../components/Sidebar';
 import SummaryCards from '../../components/SummaryCards';
 import MonthPicker from '../../components/MonthPicker';
@@ -15,8 +15,12 @@ import SmsLedgerPanel from '../../components/SmsLedgerPanel';
 import CashColumnsPanel from '../../components/CashColumnsPanel';
 import Tabs from '../../components/Tabs';
 import PrintButton from '../../components/PrintButton';
+import ExcelExportButton from '../../components/ExcelExportButton';
+import SkeletonCards from '../../components/SkeletonCards';
+import SkeletonPanel from '../../components/SkeletonPanel';
 import { useLabels } from '../../lib/LabelsContext';
 import { useTextStyles, styleToCss } from '../../lib/TextStylesContext';
+import { exportToExcel } from '../../lib/excelExport';
 
 const EMPTY_DEDUCTIONS = {
   other_deduction: 0,
@@ -46,6 +50,8 @@ export default function DashboardPage() {
   const [loadingMonth, setLoadingMonth] = useState(true);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('branches');
+  const [smsExportData, setSmsExportData] = useState([]);
+  const [cashExportData, setCashExportData] = useState([]);
 
   const saveTimer = useRef(null);
 
@@ -315,6 +321,76 @@ export default function DashboardPage() {
     finalMonthlyReview,
   };
 
+  function handleExportBranches() {
+    exportToExcel(`الفروع-${month}`, [
+      {
+        name: 'الفروع',
+        rows: branches.map((b) => {
+          const row = branchData[b.id] || { income: 0, expenses: 0 };
+          return {
+            الفرع: b.name,
+            'إجمالي الدخل': toNumber(row.income),
+            'إجمالي المصروفات': toNumber(row.expenses),
+            'صافي الدخل': toNumber(row.income) - toNumber(row.expenses),
+          };
+        }),
+      },
+      {
+        name: 'نظرة عامة',
+        rows: [
+          { البند: 'إجمالي الدخل قبل الاستقطاعات الأخرى', القيمة: incomeBeforeDeductions },
+          { البند: 'استقطاع آخر', القيمة: toNumber(deductions.other_deduction) },
+          { البند: 'صافي الدخل النهائي', القيمة: finalTotalIncome },
+        ],
+      },
+    ]);
+  }
+
+  function handleExportReconciliation() {
+    exportToExcel(`المطابقة-${month}`, [
+      {
+        name: 'مصادر الدخل',
+        rows: sources.map((s) => ({
+          المصدر: s.name,
+          المبلغ: toNumber((sourceData[s.id] || {}).amount),
+        })),
+      },
+      {
+        name: 'المراجعة الشهرية',
+        rows: [
+          { البند: 'من الجدول أعلاه', القيمة: incomeBeforeDeductions },
+          { البند: 'فاتورة الكهرباء والماء', القيمة: toNumber(deductions.electricity_water) },
+          { البند: 'الرواتب', القيمة: toNumber(deductions.salaries) },
+          { البند: 'تسليم رواتب', القيمة: toNumber(deductions.salary_handover) },
+          { البند: 'رسوم حكومية', القيمة: toNumber(deductions.government_fees) },
+          ...otherDeductions.map((d) => ({ البند: d.name, القيمة: toNumber(d.amount) })),
+          { البند: 'الإجمالي', القيمة: finalMonthlyReview },
+        ],
+      },
+    ]);
+  }
+
+  function handleExportTransfers() {
+    exportToExcel(`التحويلات-${month}`, [
+      {
+        name: 'SMS البنوك',
+        rows: smsExportData.map((r) => ({
+          البنك: r.name,
+          'عدد العمليات': r.count,
+          الإجمالي: r.total,
+        })),
+      },
+      {
+        name: 'الكاش',
+        rows: cashExportData.map((r) => ({
+          المصدر: r.source,
+          الفرع: r.branch,
+          الإجمالي: r.total,
+        })),
+      },
+    ]);
+  }
+
   if (checkingSession) return <div className="loading-screen">جارٍ التحميل…</div>;
 
   return (
@@ -332,7 +408,11 @@ export default function DashboardPage() {
         </div>
 
         {loadingMonth ? (
-          <div className="loading-screen" style={{ minHeight: 200 }}>جارٍ تحميل {monthLabel(month)}…</div>
+          <>
+            <SkeletonCards count={5} />
+            <SkeletonPanel rows={5} />
+            <SkeletonPanel rows={4} />
+          </>
         ) : (
           <>
             <SummaryCards totals={totals} />
@@ -348,7 +428,7 @@ export default function DashboardPage() {
             />
 
             {activeTab === 'branches' && (
-              <div className="tab-page">
+              <div className="tab-page fade-in-transition" key={`branches-${month}`}>
                 <BranchesTable
                   branches={branches}
                   branchData={branchData}
@@ -362,12 +442,15 @@ export default function DashboardPage() {
                   deductions={deductions}
                   onChangeDeduction={handleChangeDeduction}
                 />
-                <PrintButton />
+                <div className="action-buttons-row">
+                  <PrintButton />
+                  <ExcelExportButton onClick={handleExportBranches} />
+                </div>
               </div>
             )}
 
             {activeTab === 'reconciliation' && (
-              <div className="tab-page">
+              <div className="tab-page fade-in-transition" key={`reconciliation-${month}`}>
                 <FinalReviewPanel
                   totals={totals}
                   deductions={deductions}
@@ -387,18 +470,25 @@ export default function DashboardPage() {
                   onRemoveSource={handleRemoveSource}
                   onToggleBankGroup={handleToggleSourceBankGroup}
                 />
-                <PrintButton />
+                <div className="action-buttons-row">
+                  <PrintButton />
+                  <ExcelExportButton onClick={handleExportReconciliation} />
+                </div>
               </div>
             )}
 
             {activeTab === 'transfers' && (
-              <div className="tab-page">
+              <div className="tab-page fade-in-transition" key={`transfers-${month}`}>
                 <SmsLedgerPanel
                   sources={smsSources}
                   onRenameSource={handleRenameSmsSource}
+                  onResultsChange={setSmsExportData}
                 />
-                <CashColumnsPanel sources={cashSources} />
-                <PrintButton />
+                <CashColumnsPanel sources={cashSources} onResultsChange={setCashExportData} />
+                <div className="action-buttons-row">
+                  <PrintButton />
+                  <ExcelExportButton onClick={handleExportTransfers} />
+                </div>
               </div>
             )}
           </>

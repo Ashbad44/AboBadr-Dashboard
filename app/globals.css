@@ -487,6 +487,102 @@ table.grid-table input.cell-input {
   background: var(--teal-800);
 }
 
+.excel-btn {
+  margin-top: 8px;
+  border: none;
+  background: var(--green-600);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  align-self: flex-start;
+}
+
+.excel-btn:hover {
+  background: #17803f;
+}
+
+.action-buttons-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ---------- Skeleton loaders ---------- */
+@keyframes skeleton-pulse {
+  0% { opacity: 0.55; }
+  50% { opacity: 1; }
+  100% { opacity: 0.55; }
+}
+
+.skeleton-block {
+  background: #e2e8e8;
+  border-radius: 8px;
+  animation: skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton-cards-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.skeleton-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.skeleton-card .skeleton-block:first-child {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.skeleton-card-lines {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-panel {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.skeleton-row {
+  display: flex;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.skeleton-row .skeleton-block {
+  height: 16px;
+  flex: 1;
+}
+
+/* ---------- Transitions ---------- */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-transition {
+  animation: fade-in-up 220ms ease-out;
+}
+
 .kv-list .kv-row {
   display: flex;
   justify-content: space-between;
@@ -723,11 +819,14 @@ table.grid-table input.cell-input {
   .sidebar,
   .tab-nav,
   .print-btn,
+  .excel-btn,
   .add-row-btn,
   .remove-btn,
   .month-select,
   .loading-screen,
-  .style-toolbar-wrap {
+  .style-toolbar-wrap,
+  .skeleton-cards-row,
+  .skeleton-panel {
     display: none !important;
   }
 

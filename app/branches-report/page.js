@@ -8,8 +8,11 @@ import Sidebar from '../../components/Sidebar';
 import YearPicker from '../../components/YearPicker';
 import BranchesCompareChart from '../../components/BranchesCompareChart';
 import PrintButton from '../../components/PrintButton';
+import ExcelExportButton from '../../components/ExcelExportButton';
+import SkeletonPanel from '../../components/SkeletonPanel';
 import { useLabels } from '../../lib/LabelsContext';
 import { useTextStyles, styleToCss } from '../../lib/TextStylesContext';
+import { exportToExcel } from '../../lib/excelExport';
 
 export default function BranchesReportPage() {
   const router = useRouter();
@@ -71,6 +74,20 @@ export default function BranchesReportPage() {
     net: acc.net + r.net,
   }), { income: 0, expenses: 0, net: 0 });
 
+  function handleExport() {
+    exportToExcel(`تقرير-الفروع-${year}`, [
+      {
+        name: 'الفروع',
+        rows: [
+          ...rows.map((r) => ({
+            الفرع: r.name, الإيرادات: r.income, المصروفات: r.expenses, الصافي: r.net,
+          })),
+          { الفرع: 'الإجمالي', الإيرادات: totals.income, المصروفات: totals.expenses, الصافي: totals.net },
+        ],
+      },
+    ]);
+  }
+
   return (
     <div className="app-shell" style={{ zoom: `${textScale}%` }}>
       <Sidebar />
@@ -87,9 +104,12 @@ export default function BranchesReportPage() {
         </div>
 
         {loading ? (
-          <div className="loading-screen" style={{ minHeight: 200 }}>جارٍ التحميل…</div>
+          <>
+            <SkeletonPanel rows={4} />
+            <SkeletonPanel rows={6} />
+          </>
         ) : (
-          <div className="tab-page">
+          <div className="tab-page fade-in-transition" key={year}>
             <div className="panel panel-large">
               <div className="panel-header">
                 <div className="panel-icon" style={{ background: 'var(--teal-500)' }}>📊</div>
@@ -133,7 +153,10 @@ export default function BranchesReportPage() {
                 </tbody>
               </table>
             </div>
-            <PrintButton />
+            <div className="action-buttons-row">
+              <PrintButton />
+              <ExcelExportButton onClick={handleExport} />
+            </div>
           </div>
         )}
       </div>

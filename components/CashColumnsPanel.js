@@ -16,7 +16,7 @@ async function fetchColumns(source) {
   return data.columns || [];
 }
 
-export default function CashColumnsPanel({ sources }) {
+export default function CashColumnsPanel({ sources, onResultsChange }) {
   const { t } = useLabels();
   const { getStyle } = useTextStyles();
   const ls = (key) => styleToCss(getStyle('label', key));
@@ -43,6 +43,19 @@ export default function CashColumnsPanel({ sources }) {
       refreshAll();
     }
   }, [sources, refreshAll]);
+
+  // Report current results up to the parent (for Excel export), whenever they change.
+  useEffect(() => {
+    if (!onResultsChange) return;
+    const flat = [];
+    sources.forEach((s) => {
+      const r = results[s.id];
+      if (r?.status === 'ok') {
+        r.columns.forEach((c) => flat.push({ source: s.name, branch: c.name, total: c.total }));
+      }
+    });
+    onResultsChange(flat);
+  }, [results, sources, onResultsChange]);
 
   if (sources.length === 0) return null;
 

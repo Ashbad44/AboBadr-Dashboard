@@ -18,7 +18,7 @@ async function fetchSourceTotal(source) {
   return { total, count: rows.length };
 }
 
-export default function SmsLedgerPanel({ sources, onRenameSource }) {
+export default function SmsLedgerPanel({ sources, onRenameSource, onResultsChange }) {
   const { t } = useLabels();
   const { getStyle } = useTextStyles();
   const ls = (key) => styleToCss(getStyle('label', key));
@@ -51,6 +51,16 @@ export default function SmsLedgerPanel({ sources, onRenameSource }) {
     (sum, r) => sum + (r.status === 'ok' ? r.total : 0),
     0
   );
+
+  // Report current results up to the parent (for Excel export), whenever they change.
+  useEffect(() => {
+    if (!onResultsChange) return;
+    onResultsChange(sources.map((s) => ({
+      name: s.name,
+      count: results[s.id]?.status === 'ok' ? results[s.id].count : 0,
+      total: results[s.id]?.status === 'ok' ? results[s.id].total : 0,
+    })));
+  }, [results, sources, onResultsChange]);
 
   return (
     <div className="panel sms-panel">
