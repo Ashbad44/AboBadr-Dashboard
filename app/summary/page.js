@@ -7,6 +7,7 @@ import {
   toNumber, fmtMoney, currentMonthValue, shiftMonth, pctChange, shortMonthLabel,
 } from '../../lib/utils';
 import Sidebar from '../../components/Sidebar';
+import MonthPicker from '../../components/MonthPicker';
 import PrintButton from '../../components/PrintButton';
 import ExcelExportButton from '../../components/ExcelExportButton';
 import SkeletonCards from '../../components/SkeletonCards';
@@ -23,6 +24,7 @@ export default function ExecutiveSummaryPage() {
 
   const [checkingSession, setCheckingSession] = useState(true);
   const [loading, setLoading] = useState(true);
+  const [refMonth, setRefMonth] = useState(currentMonthValue());
   const [kpis, setKpis] = useState(null);
   const [trend, setTrend] = useState([]);
   const [branchRows, setBranchRows] = useState([]);
@@ -37,7 +39,7 @@ export default function ExecutiveSummaryPage() {
   const load = useCallback(async () => {
     setLoading(true);
 
-    const current = currentMonthValue();
+    const current = refMonth;
     const lastMonth = shiftMonth(current, -1);
     const lastYear = shiftMonth(current, -12);
     const rangeStart = shiftMonth(current, -12);
@@ -107,11 +109,11 @@ export default function ExecutiveSummaryPage() {
     setBranchRows(branchResult);
 
     setLoading(false);
-  }, []);
+  }, [refMonth]);
 
   useEffect(() => {
     if (!checkingSession) load();
-  }, [checkingSession, load]);
+  }, [checkingSession, refMonth, load]);
 
   if (checkingSession) return <div className="loading-screen">جارٍ التحميل…</div>;
 
@@ -157,6 +159,7 @@ export default function ExecutiveSummaryPage() {
             <h1 className="page-title">{t('exec_summary_title')}</h1>
             <p className="page-subtitle">{t('exec_summary_subtitle')}</p>
           </div>
+          <MonthPicker value={refMonth} onChange={setRefMonth} />
         </div>
 
         {loading ? (
@@ -166,7 +169,7 @@ export default function ExecutiveSummaryPage() {
             <SkeletonPanel rows={5} />
           </>
         ) : (
-          <div className="tab-page fade-in-transition">
+          <div className="tab-page fade-in-transition" key={refMonth}>
             <div className="cards-row" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))' }}>
               <ExecutiveKpiCard
                 icon="💼" color="var(--teal-600)"
