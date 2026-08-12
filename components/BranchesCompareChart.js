@@ -3,6 +3,7 @@
 import {
   ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, CartesianGrid,
 } from 'recharts';
+import { useEffect } from 'react';
 import { fmtMoney } from '../lib/utils';
 
 function CustomTooltip({ active, payload, label }) {
@@ -23,6 +24,12 @@ function CustomTooltip({ active, payload, label }) {
 }
 
 export default function BranchesCompareChart({ data, labels }) {
+  useEffect(() => {
+    const handler = () => window.dispatchEvent(new Event('resize'));
+    window.addEventListener('beforeprint', handler);
+    return () => window.removeEventListener('beforeprint', handler);
+  }, []);
+
   return (
     <div dir="ltr" style={{ width: '100%', height: 340 }}>
       <ResponsiveContainer width="100%" height="100%">

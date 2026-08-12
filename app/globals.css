@@ -933,6 +933,13 @@ table.grid-table input.cell-input {
     width: 100%;
   }
 
+  /* Keeps chart containers from collapsing to zero height while
+     the browser recalculates their size for the print layout. */
+  .recharts-responsive-container,
+  .recharts-wrapper {
+    min-height: 280px !important;
+  }
+
   .panel-header {
     margin-bottom: 14px;
     gap: 10px;
