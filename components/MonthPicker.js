@@ -3,7 +3,7 @@
 import { recentMonthOptions, monthLabel } from '../lib/utils';
 
 export default function MonthPicker({ value, onChange }) {
-  const options = recentMonthOptions(36);
+  const options = recentMonthOptions();
   const year = value.split('-')[0];
 
   return (

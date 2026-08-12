@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '../../lib/supabaseClient';
-import { currentMonthValue, toNumber } from '../../lib/utils';
+import { currentMonthValue, toNumber, isBranchVisibleForMonth } from '../../lib/utils';
 import Sidebar from '../../components/Sidebar';
 import SummaryCards from '../../components/SummaryCards';
 import MonthPicker from '../../components/MonthPicker';
@@ -297,9 +297,12 @@ export default function DashboardPage() {
     setOtherDeductions((prev) => prev.filter((d) => d.id !== id));
   }
 
+  // --- branches visible for the currently selected month (date-scoped branches) ---
+  const visibleBranches = branches.filter((b) => isBranchVisibleForMonth(b, month));
+
   // --- derived totals (all client-side, live, like Excel formulas) ---
-  const totalIncome = branches.reduce((s, b) => s + toNumber((branchData[b.id] || {}).income), 0);
-  const totalExpenses = branches.reduce((s, b) => s + toNumber((branchData[b.id] || {}).expenses), 0);
+  const totalIncome = visibleBranches.reduce((s, b) => s + toNumber((branchData[b.id] || {}).income), 0);
+  const totalExpenses = visibleBranches.reduce((s, b) => s + toNumber((branchData[b.id] || {}).expenses), 0);
   const incomeBeforeDeductions = totalIncome - totalExpenses;
   const totalDeductions = toNumber(deductions.other_deduction);
   const finalTotalIncome = incomeBeforeDeductions - totalDeductions;
@@ -325,7 +328,7 @@ export default function DashboardPage() {
     exportToExcel(`الفروع-${month}`, [
       {
         name: 'الفروع',
-        rows: branches.map((b) => {
+        rows: visibleBranches.map((b) => {
           const row = branchData[b.id] || { income: 0, expenses: 0 };
           return {
             الفرع: b.name,
@@ -430,7 +433,7 @@ export default function DashboardPage() {
             {activeTab === 'branches' && (
               <div className="tab-page fade-in-transition" key={`branches-${month}`}>
                 <BranchesTable
-                  branches={branches}
+                  branches={visibleBranches}
                   branchData={branchData}
                   onChangeCell={handleChangeCell}
                   onRenameBranch={handleRenameBranch}
