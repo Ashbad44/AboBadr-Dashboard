@@ -866,16 +866,17 @@ table.grid-table input.cell-input {
     padding: 6px 14px;
   }
 
-  /* Summary cards — full width, dashboard-scale sizing */
+  /* Summary cards — 3 per row, wraps 5 cards into 3+2 so the highlighted
+     final card has room and nothing gets clipped at the page edge */
   .cards-row {
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
     margin-bottom: 18px;
     width: 100%;
   }
 
   .stat-card {
-    padding: 12px;
+    padding: 16px;
     box-shadow: none !important;
     break-inside: avoid;
     min-width: 0;
@@ -891,13 +892,13 @@ table.grid-table input.cell-input {
   }
 
   .stat-icon {
-    width: 30px;
-    height: 30px;
-    font-size: 13px;
+    width: 36px;
+    height: 36px;
+    font-size: 15px;
   }
 
   .stat-title {
-    font-size: 10.5px;
+    font-size: 13px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -906,7 +907,7 @@ table.grid-table input.cell-input {
   }
 
   .stat-value {
-    font-size: 18px;
+    font-size: 22px;
   }
 
   .stat-note {
@@ -914,7 +915,7 @@ table.grid-table input.cell-input {
   }
 
   .stat-card.highlight-card .stat-value {
-    font-size: 20px;
+    font-size: 26px;
   }
 
   /* Panels — full width, close to on-screen "panel-large" scale */
