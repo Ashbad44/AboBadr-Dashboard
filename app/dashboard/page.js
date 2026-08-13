@@ -44,6 +44,7 @@ export default function DashboardPage() {
   const [smsSources, setSmsSources] = useState([]);
   const [cashSources, setCashSources] = useState([]);
   const [otherDeductions, setOtherDeductions] = useState([]); // [{id, name, amount, sort_order}] — scoped to current month
+  const [extraSources, setExtraSources] = useState([]); // [{id, name, amount, sort_order}] — scoped to current month
   const [branchData, setBranchData] = useState({}); // { branchId: {income, expenses} }
   const [sourceData, setSourceData] = useState({}); // { sourceId: {amount} }
   const [deductions, setDeductions] = useState(EMPTY_DEDUCTIONS);
@@ -138,6 +139,13 @@ export default function DashboardPage() {
       .order('sort_order', { ascending: true });
     setOtherDeductions(odd || []);
 
+    const { data: extra } = await supabase
+      .from('monthly_extra_earning_sources')
+      .select('*')
+      .eq('month', monthValue)
+      .order('sort_order', { ascending: true });
+    setExtraSources(extra || []);
+
     setLoadingMonth(false);
   }, []);
 
@@ -220,11 +228,11 @@ export default function DashboardPage() {
 
   async function handleAddSource() {
     const { data, error } = await supabase
-      .from('earning_sources')
-      .insert({ name: `مصدر ${sources.length + 1}`, sort_order: sources.length + 1 })
+      .from('monthly_extra_earning_sources')
+      .insert({ month, name: `مصدر ${extraSources.length + 1}`, amount: 0, sort_order: extraSources.length + 1 })
       .select()
       .single();
-    if (!error && data) setSources((prev) => [...prev, data]);
+    if (!error && data) setExtraSources((prev) => [...prev, data]);
   }
 
   async function handleRemoveSource(sourceId) {
@@ -236,6 +244,26 @@ export default function DashboardPage() {
   async function handleToggleSourceBankGroup(sourceId, value) {
     setSources((prev) => prev.map((s) => (s.id === sourceId ? { ...s, include_in_bank_total: value } : s)));
     await supabase.from('earning_sources').update({ include_in_bank_total: value }).eq('id', sourceId);
+  }
+
+  function handleChangeExtraSourceAmount(id, value) {
+    setExtraSources((prev) => prev.map((s) => (s.id === id ? { ...s, amount: value } : s)));
+    scheduleSave(async () => {
+      await supabase.from('monthly_extra_earning_sources').update({ amount: toNumber(value) }).eq('id', id);
+    });
+  }
+
+  function handleRenameExtraSource(id, name) {
+    setExtraSources((prev) => prev.map((s) => (s.id === id ? { ...s, name } : s)));
+    scheduleSave(async () => {
+      await supabase.from('monthly_extra_earning_sources').update({ name }).eq('id', id);
+    });
+  }
+
+  async function handleRemoveExtraSource(id) {
+    if (!confirm('إزالة هذا المصدر من هذا الشهر؟')) return;
+    await supabase.from('monthly_extra_earning_sources').delete().eq('id', id);
+    setExtraSources((prev) => prev.filter((s) => s.id !== id));
   }
 
   async function handleRenameSmsSource(sourceId, name) {
@@ -353,10 +381,16 @@ export default function DashboardPage() {
     exportToExcel(`المطابقة-${month}`, [
       {
         name: 'مصادر الدخل',
-        rows: sources.map((s) => ({
-          المصدر: s.name,
-          المبلغ: toNumber((sourceData[s.id] || {}).amount),
-        })),
+        rows: [
+          ...sources.map((s) => ({
+            المصدر: s.name,
+            المبلغ: toNumber((sourceData[s.id] || {}).amount),
+          })),
+          ...extraSources.map((s) => ({
+            المصدر: s.name,
+            المبلغ: toNumber(s.amount),
+          })),
+        ],
       },
       {
         name: 'المراجعة الشهرية',
@@ -472,6 +506,10 @@ export default function DashboardPage() {
                   onAddSource={handleAddSource}
                   onRemoveSource={handleRemoveSource}
                   onToggleBankGroup={handleToggleSourceBankGroup}
+                  extraSources={extraSources}
+                  onChangeExtraSourceAmount={handleChangeExtraSourceAmount}
+                  onRenameExtraSource={handleRenameExtraSource}
+                  onRemoveExtraSource={handleRemoveExtraSource}
                 />
                 <div className="action-buttons-row">
                   <PrintButton />

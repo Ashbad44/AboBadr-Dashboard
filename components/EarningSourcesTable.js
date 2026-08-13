@@ -14,12 +14,18 @@ export default function EarningSourcesTable({
   onAddSource,
   onRemoveSource,
   onToggleBankGroup,
+  extraSources,
+  onChangeExtraSourceAmount,
+  onRenameExtraSource,
+  onRemoveExtraSource,
 }) {
   const { t } = useLabels();
   const { getStyle } = useTextStyles();
   const ls = (key) => styleToCss(getStyle('label', key));
 
-  const total = sources.reduce((sum, s) => sum + toNumber((sourceData[s.id] || {}).amount), 0);
+  const recurringTotal = sources.reduce((sum, s) => sum + toNumber((sourceData[s.id] || {}).amount), 0);
+  const extraTotal = extraSources.reduce((sum, s) => sum + toNumber(s.amount), 0);
+  const total = recurringTotal + extraTotal;
 
   const bankSources = sources.filter((s) => s.include_in_bank_total);
   const otherSources = sources.filter((s) => !s.include_in_bank_total);
@@ -69,6 +75,38 @@ export default function EarningSourcesTable({
     );
   }
 
+  function renderExtraRow(s) {
+    return (
+      <tr key={s.id}>
+        <td>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <input
+              className="branch-name-input"
+              value={s.name}
+              onChange={(e) => onRenameExtraSource(s.id, e.target.value)}
+              style={styleToCss(getStyle('extra_earning_source', s.id))}
+            />
+            <StyleToolbar type="extra_earning_source" id={s.id} />
+          </div>
+        </td>
+        <td className="right">
+          <input
+            className="cell-input"
+            type="text"
+            inputMode="decimal"
+            dir="ltr"
+            lang="en"
+            value={s.amount}
+            onChange={(e) => onChangeExtraSourceAmount(s.id, e.target.value)}
+          />
+        </td>
+        <td>
+          <button className="remove-btn" onClick={() => onRemoveExtraSource(s.id)}>✕</button>
+        </td>
+      </tr>
+    );
+  }
+
   return (
     <div className="panel sources-panel">
       <div className="panel-header">
@@ -95,6 +133,9 @@ export default function EarningSourcesTable({
           )}
 
           {otherSources.map(renderRow)}
+
+          {/* Sources added via "+ إضافة مصدر" — scoped to this month only */}
+          {extraSources.map(renderExtraRow)}
 
           <tr className="total-row">
             <td style={ls('sources_total_row')}>{t('sources_total_row')}</td>
