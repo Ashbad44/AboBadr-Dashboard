@@ -940,6 +940,18 @@ table.grid-table input.cell-input {
     padding: 22px 24px;
     break-inside: auto;
     width: 100%;
+    max-width: 180mm !important;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+
+  /* Charts measure themselves off the screen's width before the print
+     stylesheet's page constraints fully apply — cap them hard so they
+     can never force their parent panel wider than the printable page. */
+  .recharts-responsive-container,
+  .recharts-wrapper {
+    max-width: 100% !important;
+    overflow: hidden !important;
   }
 
   /* Panels can now split across pages when needed (so page 1 isn't left
