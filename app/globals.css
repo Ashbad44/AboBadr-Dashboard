@@ -919,10 +919,18 @@ table.grid-table input.cell-input {
   }
 
   /* Panels — full width, close to on-screen "panel-large" scale */
+  /* Flexbox (used on screen) doesn't support splitting content across
+     printed pages — each flex item either fits or jumps whole to the next
+     page. Switching to block layout for print lets panels flow and split
+     naturally, so pages fill up instead of leaving blank space. */
   .tab-page {
-    gap: 20px;
+    display: block !important;
     max-width: 100%;
     width: 100%;
+  }
+
+  .tab-page > * {
+    margin-bottom: 20px;
   }
 
   .panel,
@@ -968,6 +976,14 @@ table.grid-table input.cell-input {
   table.grid-table,
   .panel-large table.grid-table {
     font-size: 16px !important;
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  table.grid-table td,
+  table.grid-table th {
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   table.grid-table thead th,
