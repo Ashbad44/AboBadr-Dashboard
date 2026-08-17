@@ -930,8 +930,15 @@ table.grid-table input.cell-input {
     box-shadow: none !important;
     border: 1.5px solid #c9d2d2;
     padding: 22px 24px;
-    break-inside: avoid;
+    break-inside: auto;
     width: 100%;
+  }
+
+  /* Panels can now split across pages when needed (so page 1 isn't left
+     mostly blank), but individual table rows and stat cards never get cut
+     in half mid-row. */
+  table.grid-table tr {
+    break-inside: avoid;
   }
 
   /* Keeps chart containers from collapsing to zero height while
@@ -944,6 +951,7 @@ table.grid-table input.cell-input {
   .panel-header {
     margin-bottom: 14px;
     gap: 10px;
+    break-after: avoid;
   }
 
   .panel-icon {
