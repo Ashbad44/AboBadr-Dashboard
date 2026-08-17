@@ -1003,16 +1003,24 @@ table.grid-table input.cell-input {
     width: 100%;
   }
 
-  /* First column (branch/source names, row labels) gets more room than
-     the numeric columns, so short words like "الإجمالي" never wrap. */
+  /* Label column takes what it needs; numeric columns get the rest. */
   table.grid-table thead th:first-child {
-    width: 34%;
+    width: 28%;
   }
 
+  /* Numbers must never wrap or hyphenate — a split figure is unreadable.
+     Only the label column is allowed to break across lines. */
   table.grid-table td,
   table.grid-table th {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  table.grid-table thead th:first-child,
+  table.grid-table tbody td:first-child {
+    white-space: normal;
     overflow-wrap: break-word;
-    word-break: break-word;
   }
 
   table.grid-table tbody tr.total-row td:first-child,
@@ -1056,16 +1064,16 @@ table.grid-table input.cell-input {
 
   table.grid-table tbody tr.total-row td,
   .panel-large table.grid-table tbody tr.total-row td {
-    font-size: 24px !important;
-    padding: 14px 15px;
+    font-size: 18px !important;
+    padding: 14px 8px;
     background: #dcece8 !important;
     border-top: 2px solid var(--teal-600);
     color: var(--teal-900);
   }
 
   table.grid-table tbody tr.bank-subtotal-row td {
-    font-size: 20px !important;
-    padding: 13px 15px;
+    font-size: 18px !important;
+    padding: 13px 8px;
     background: #dbe7f9 !important;
     border-top: 2px solid var(--blue-500);
     border-bottom: 2px solid var(--blue-500);
