@@ -1080,6 +1080,24 @@ table.grid-table input.cell-input {
     color: var(--blue-500);
   }
 
+  /* Earning-sources box: names here can be long ("مصروفات ابو بدر",
+     "مستلم شقه 22 بدر 4"), so give the label column most of the width and
+     let it wrap instead of truncating. The amount stays pinned far right
+     with plenty of clearance from the text. */
+  .sources-panel table.grid-table thead th:first-child {
+    width: 68%;
+  }
+
+  .sources-panel table.grid-table td:first-child,
+  .sources-panel table.grid-table tbody tr.total-row td:first-child,
+  .sources-panel table.grid-table tbody tr.bank-subtotal-row td:first-child {
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+    overflow-wrap: break-word;
+    padding-inline-end: 20px;
+  }
+
   .branch-name-input,
   .panel-large .branch-name-input {
     font-size: 16px !important;
