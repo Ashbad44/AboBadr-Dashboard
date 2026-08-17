@@ -933,6 +933,17 @@ table.grid-table input.cell-input {
     margin-bottom: 20px;
   }
 
+  /* Dashboard's 3 tabs only (not the Reports pages): force page 1 to be
+     cards + first box, page 2 to be the second box — deterministic instead
+     of relying on natural flow, which varies month to month. */
+  .dashboard-tab-page > *:nth-child(2) {
+    break-before: page;
+  }
+
+  .action-buttons-row {
+    display: none !important;
+  }
+
   .panel,
   .panel-large {
     box-shadow: none !important;
@@ -992,10 +1003,21 @@ table.grid-table input.cell-input {
     width: 100%;
   }
 
+  /* First column (branch/source names, row labels) gets more room than
+     the numeric columns, so short words like "الإجمالي" never wrap. */
+  table.grid-table thead th:first-child {
+    width: 34%;
+  }
+
   table.grid-table td,
   table.grid-table th {
     overflow-wrap: break-word;
     word-break: break-word;
+  }
+
+  table.grid-table tbody tr.total-row td:first-child,
+  table.grid-table tbody tr.bank-subtotal-row td:first-child {
+    white-space: nowrap;
   }
 
   table.grid-table thead th,

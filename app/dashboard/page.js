@@ -465,7 +465,7 @@ export default function DashboardPage() {
             />
 
             {activeTab === 'branches' && (
-              <div className="tab-page fade-in-transition" key={`branches-${month}`}>
+              <div className="tab-page dashboard-tab-page fade-in-transition" key={`branches-${month}`}>
                 <BranchesTable
                   branches={visibleBranches}
                   branchData={branchData}
@@ -487,7 +487,7 @@ export default function DashboardPage() {
             )}
 
             {activeTab === 'reconciliation' && (
-              <div className="tab-page fade-in-transition" key={`reconciliation-${month}`}>
+              <div className="tab-page dashboard-tab-page fade-in-transition" key={`reconciliation-${month}`}>
                 <FinalReviewPanel
                   totals={totals}
                   deductions={deductions}
@@ -519,7 +519,7 @@ export default function DashboardPage() {
             )}
 
             {activeTab === 'transfers' && (
-              <div className="tab-page fade-in-transition" key={`transfers-${month}`}>
+              <div className="tab-page dashboard-tab-page fade-in-transition" key={`transfers-${month}`}>
                 <SmsLedgerPanel
                   sources={smsSources}
                   onRenameSource={handleRenameSmsSource}
