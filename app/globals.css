@@ -281,6 +281,19 @@ input, select {
   font-weight: 700;
 }
 
+/* Yearly totals page — bold like the other tables, with auto-calculated
+   rows subtly tinted so they read as "from the dashboard" vs manual entry. */
+.yearly-totals-panel table.grid-table,
+.yearly-totals-panel td,
+.yearly-totals-panel th,
+.yearly-totals-panel input.cell-input {
+  font-weight: 700;
+}
+
+.yearly-totals-panel tbody tr.auto-year-row td {
+  background: #f4faf8;
+}
+
 /* ---------- Cards ---------- */
 .cards-row {
   display: grid;
