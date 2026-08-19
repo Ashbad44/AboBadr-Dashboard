@@ -1130,3 +1130,59 @@ table.grid-table input.cell-input {
     min-width: 50px;
   }
 }
+
+/* ============================================================
+   Yearly totals page — six columns of large figures need tighter
+   sizing than the other tables, both on screen (so the table stays
+   inside its panel) and in print (so numbers aren't clipped).
+   ============================================================ */
+.yearly-totals-panel table.grid-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.yearly-totals-panel table.grid-table th,
+.yearly-totals-panel table.grid-table td {
+  padding-inline: 6px;
+  font-size: 17px;
+  overflow-wrap: break-word;
+}
+
+.yearly-totals-panel table.grid-table th:first-child,
+.yearly-totals-panel table.grid-table td:first-child {
+  width: 12%;
+}
+
+.yearly-totals-panel table.grid-table input.cell-input {
+  width: 100%;
+  min-width: 0;
+  font-size: 17px;
+  padding: 6px 4px;
+}
+
+@media print {
+  .yearly-totals-panel table.grid-table,
+  .yearly-totals-panel table.grid-table th,
+  .yearly-totals-panel table.grid-table td {
+    font-size: 11px !important;
+    padding: 6px 4px !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: clip !important;
+  }
+
+  .yearly-totals-panel table.grid-table thead th {
+    font-size: 10px !important;
+    white-space: normal !important;
+  }
+
+  .yearly-totals-panel table.grid-table tbody tr.total-row td {
+    font-size: 12px !important;
+    padding: 8px 4px !important;
+  }
+
+  .yearly-totals-panel table.grid-table th:first-child,
+  .yearly-totals-panel table.grid-table td:first-child {
+    width: 10%;
+  }
+}
