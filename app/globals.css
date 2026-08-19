@@ -1148,6 +1148,21 @@ table.grid-table input.cell-input {
   overflow-wrap: break-word;
 }
 
+/* Header labels here are long ("صافي الدخل العام بعد الخصم ( للوالد )")
+   and sit in narrow columns — smaller than the body text so they wrap
+   tidily instead of forcing the table wider than its panel. */
+.yearly-totals-panel table.grid-table thead th {
+  font-size: 13px;
+  line-height: 1.35;
+}
+
+/* The global total-row size (28px) is far too large for six narrow
+   columns — it makes "المجموع" wrap onto two stacked lines. */
+.yearly-totals-panel table.grid-table tbody tr.total-row td {
+  font-size: 18px;
+  white-space: nowrap;
+}
+
 .yearly-totals-panel table.grid-table th:first-child,
 .yearly-totals-panel table.grid-table td:first-child {
   width: 12%;
