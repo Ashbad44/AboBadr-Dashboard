@@ -294,6 +294,14 @@ input, select {
   background: #f4faf8;
 }
 
+/* Calculated columns (صافي الإيرادات / صافي الدخل بعد الخصم) — derived from
+   the typed columns, so they read as values rather than empty input boxes. */
+.calculated-cell {
+  display: inline-block;
+  padding: 6px 4px;
+  color: var(--teal-800);
+}
+
 /* ---------- Cards ---------- */
 .cards-row {
   display: grid;

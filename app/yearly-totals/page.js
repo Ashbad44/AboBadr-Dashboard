@@ -15,12 +15,15 @@ import { exportToExcel } from '../../lib/excelExport';
 // Rows shown in the table. Earliest year the app supports data for.
 const FIRST_YEAR = 2010;
 
+// calculated: true  -> value is derived, never typed (mirrors the summary cards)
+//   net_income   = total_income - total_expenses
+//   final_income = net_income   - total_deduction
 const FIELDS = [
-  { key: 'total_income', labelKey: 'annual_card_total_income' },
-  { key: 'total_expenses', labelKey: 'annual_card_total_expenses' },
-  { key: 'net_income', labelKey: 'annual_card_net_income' },
-  { key: 'total_deduction', labelKey: 'annual_card_deduction' },
-  { key: 'final_income', labelKey: 'annual_card_final_income' },
+  { key: 'total_income', labelKey: 'annual_card_total_income', calculated: false },
+  { key: 'total_expenses', labelKey: 'annual_card_total_expenses', calculated: false },
+  { key: 'net_income', labelKey: 'annual_card_net_income', calculated: true },
+  { key: 'total_deduction', labelKey: 'annual_card_deduction', calculated: false },
+  { key: 'final_income', labelKey: 'annual_card_final_income', calculated: true },
 ];
 
 const EMPTY_ROW = {
@@ -110,20 +113,34 @@ export default function YearlyTotalsPage() {
     return !!(autoRows[year] && autoRows[year]._hasData);
   }
 
+  // Derives net_income and final_income from the three typed values,
+  // exactly like the summary cards on the dashboard do.
+  function withCalculated(row) {
+    const income = toNumber(row.total_income);
+    const expenses = toNumber(row.total_expenses);
+    const deduction = toNumber(row.total_deduction);
+    const net = income - expenses;
+    return { ...row, net_income: net, final_income: net - deduction };
+  }
+
   // Value shown for a given year/field — dashboard data wins, manual otherwise.
   function valueFor(year, field) {
     if (isAuto(year)) return toNumber(autoRows[year][field]);
-    return toNumber((manualRows[year] || {})[field]);
+    const row = withCalculated(manualRows[year] || EMPTY_ROW);
+    return toNumber(row[field]);
   }
 
   function handleManualChange(year, field, value) {
     setManualRows((prev) => {
-      const next = { ...prev, [year]: { ...EMPTY_ROW, ...(prev[year] || {}), [field]: value } };
+      const merged = { ...EMPTY_ROW, ...(prev[year] || {}), [field]: value };
+      const next = { ...prev, [year]: merged };
 
       setSaving(true);
       if (saveTimer.current) clearTimeout(saveTimer.current);
       saveTimer.current = setTimeout(async () => {
-        const row = next[year];
+        // Store the derived values too, so exports and any future reads
+        // stay consistent with what's shown on screen.
+        const row = withCalculated(merged);
         await supabase.from('yearly_manual_totals').upsert({
           year,
           total_income: toNumber(row.total_income),
@@ -203,6 +220,7 @@ export default function YearlyTotalsPage() {
                 <tbody>
                   {years.map((y) => {
                     const auto = isAuto(y);
+                    const manualRow = withCalculated(manualRows[y] || EMPTY_ROW);
                     return (
                       <tr key={y} className={auto ? 'auto-year-row' : ''}>
                         <td dir="ltr" style={{ fontWeight: 700 }}>{y}</td>
@@ -210,6 +228,8 @@ export default function YearlyTotalsPage() {
                           <td className="right" key={f.key}>
                             {auto ? (
                               fmtMoney(autoRows[y][f.key])
+                            ) : f.calculated ? (
+                              <span className="calculated-cell">{fmtMoney(manualRow[f.key])}</span>
                             ) : (
                               <input
                                 className="cell-input"
