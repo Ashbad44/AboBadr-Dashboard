@@ -16,6 +16,7 @@ export default function Sidebar() {
     { href: '/dashboard', label: t('nav_dashboard'), key: 'nav_dashboard', icon: '🏠' },
     { href: '/reports', label: t('nav_annual_report'), key: 'nav_annual_report', icon: '📅' },
     { href: '/branches-report', label: t('nav_branches_report'), key: 'nav_branches_report', icon: '🏢' },
+    { href: '/branch-net-income', label: t('nav_branch_net_income'), key: 'nav_branch_net_income', icon: '📉' },
     { href: '/yearly-totals', label: t('nav_yearly_totals'), key: 'nav_yearly_totals', icon: '📆' },
     { href: '/settings', label: t('nav_settings'), key: 'nav_settings', icon: '⚙️' },
     { href: '/summary', label: t('nav_executive_summary'), key: 'nav_executive_summary', icon: '⭐' },

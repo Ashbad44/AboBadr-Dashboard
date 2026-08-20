@@ -302,6 +302,27 @@ input, select {
   color: var(--teal-800);
 }
 
+/* Branch Net Income Analysis page — small badges marking whether a
+   year's value came from the dashboard automatically or was typed by hand. */
+.badge-auto,
+.badge-manual {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge-auto {
+  background: #eef6f4;
+  color: var(--teal-700, var(--teal-600));
+}
+
+.badge-manual {
+  background: #e3edfb;
+  color: var(--blue-500);
+}
+
 /* ---------- Cards ---------- */
 .cards-row {
   display: grid;
