@@ -1,15 +1,19 @@
 'use client';
 
-export default function BranchPicker({ branches, value, onChange, placeholder }) {
+import { FilterBar, FilterField } from './FilterBar';
+
+export default function BranchPicker({ branches, value, onChange }) {
+  const options = branches.map((b) => ({ value: b.id, label: b.name }));
+
   return (
-    <select
-      className="month-select"
-      value={value || ''}
-      onChange={(e) => onChange(e.target.value)}
-    >
-      {branches.map((b) => (
-        <option key={b.id} value={b.id}>{b.name}</option>
-      ))}
-    </select>
+    <FilterBar>
+      <FilterField
+        label="الفرع"
+        icon="🏢"
+        value={value || ''}
+        onChange={onChange}
+        options={options}
+      />
+    </FilterBar>
   );
 }

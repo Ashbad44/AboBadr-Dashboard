@@ -1,6 +1,7 @@
 'use client';
 
 import { monthLabel } from '../lib/utils';
+import { FilterBar, FilterField } from './FilterBar';
 
 const FIRST_YEAR = 2010;
 
@@ -14,7 +15,12 @@ export default function MonthPicker({ value, onChange }) {
   const currentYear = new Date().getFullYear();
 
   const years = [];
-  for (let y = currentYear; y >= FIRST_YEAR; y--) years.push(y);
+  for (let y = currentYear; y >= FIRST_YEAR; y--) years.push({ value: String(y), label: String(y) });
+
+  const months = MONTH_NAMES.map((name, i) => ({
+    value: String(i + 1).padStart(2, '0'),
+    label: name,
+  }));
 
   function handleYearChange(newYear) {
     onChange(`${newYear}-${month}-01`);
@@ -25,21 +31,14 @@ export default function MonthPicker({ value, onChange }) {
   }
 
   return (
-    <div className="top-controls">
-      <select className="month-select" value={month} onChange={(e) => handleMonthChange(e.target.value)}>
-        {MONTH_NAMES.map((name, i) => {
-          const mm = String(i + 1).padStart(2, '0');
-          return <option key={mm} value={mm}>{name}</option>;
-        })}
-      </select>
-      <select className="month-select" value={year} onChange={(e) => handleYearChange(e.target.value)}>
-        {years.map((y) => (
-          <option key={y} value={y}>{y}</option>
-        ))}
-      </select>
-      {/* Shown only when printing, since both dropdowns are hidden then —
+    <>
+      <FilterBar>
+        <FilterField label="السنة" value={year} onChange={handleYearChange} options={years} />
+        <FilterField label="الشهر" value={month} onChange={handleMonthChange} options={months} />
+      </FilterBar>
+      {/* Shown only when printing, since the filter bar is hidden then —
           already includes the full month + year, e.g. "أغسطس 2026". */}
       <span className="print-month-label">{monthLabel(value)}</span>
-    </div>
+    </>
   );
 }

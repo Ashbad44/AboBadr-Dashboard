@@ -138,6 +138,102 @@ input, select {
   align-items: center;
 }
 
+/* ---------- Filter bar (month/year/branch pickers) ---------- */
+.filter-bar {
+  direction: ltr;
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(14, 59, 61, 0.07);
+}
+
+.filter-badge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 26px;
+  background: linear-gradient(135deg, var(--teal-900), var(--teal-600));
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  white-space: nowrap;
+  direction: rtl;
+}
+
+.filter-badge-icon {
+  font-size: 18px;
+}
+
+.filter-fields {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 14px 22px;
+}
+
+.filter-fields > * + * {
+  padding-inline-start: 18px;
+  border-inline-start: 1px solid var(--border);
+}
+
+.filter-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 150px;
+}
+
+.filter-field-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 600;
+  direction: rtl;
+  text-align: right;
+}
+
+.filter-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f6f9f8;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 9px 14px;
+}
+
+.filter-chevron {
+  font-size: 12px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.filter-icon {
+  font-size: 17px;
+  pointer-events: none;
+  margin-inline-start: auto;
+}
+
+.filter-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-dark);
+  cursor: pointer;
+  flex: 1;
+  direction: rtl;
+  text-align: right;
+}
+
+.filter-select:focus {
+  outline: none;
+}
+
 .month-select, .year-pill {
   border-radius: 8px;
   border: 1px solid var(--border);
@@ -865,6 +961,7 @@ table.grid-table input.cell-input {
   .add-row-btn,
   .remove-btn,
   .month-select,
+  .filter-bar,
   .loading-screen,
   .style-toolbar-wrap,
   .skeleton-cards-row,

@@ -1,15 +1,19 @@
 'use client';
 
 import { recentYearOptions } from '../lib/utils';
+import { FilterBar, FilterField } from './FilterBar';
 
 export default function YearPicker({ value, onChange }) {
-  const years = recentYearOptions(8);
+  const years = recentYearOptions(8).map((y) => ({ value: String(y), label: String(y) }));
 
   return (
-    <select className="month-select" value={value} onChange={(e) => onChange(Number(e.target.value))}>
-      {years.map((y) => (
-        <option key={y} value={y}>{y}</option>
-      ))}
-    </select>
+    <FilterBar>
+      <FilterField
+        label="السنة"
+        value={String(value)}
+        onChange={(v) => onChange(Number(v))}
+        options={years}
+      />
+    </FilterBar>
   );
 }
