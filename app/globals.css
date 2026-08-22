@@ -398,6 +398,22 @@ input, select {
   color: var(--teal-800);
 }
 
+/* Backup page — restore panel gets a subtle warning tint, and the file
+   input matches the site's rounded, bordered field style. */
+.backup-restore-panel {
+  border-color: #f0d9d3;
+  background: #fffaf8;
+}
+
+.backup-file-input {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 9px 12px;
+  background: #fff;
+  font-size: 14px;
+  max-width: 320px;
+}
+
 /* Branch Net Income Analysis page — small badges marking whether a
    year's value came from the dashboard automatically or was typed by hand. */
 .badge-auto,

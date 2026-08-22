@@ -19,6 +19,7 @@ export default function Sidebar() {
     { href: '/branches-report', label: t('nav_branches_report'), key: 'nav_branches_report', icon: '🏢' },
     { href: '/branch-net-income', label: t('nav_branch_net_income'), key: 'nav_branch_net_income', icon: '📉' },
     { href: '/settings', label: t('nav_settings'), key: 'nav_settings', icon: '⚙️' },
+    { href: '/backup', label: t('nav_backup'), key: 'nav_backup', icon: '💾' },
   ];
 
   async function handleSignOut() {
